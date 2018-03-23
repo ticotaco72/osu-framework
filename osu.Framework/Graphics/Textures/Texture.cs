@@ -5,19 +5,22 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.OpenGL.Textures;
+using osu.Framework.Graphics.OpenGL.Vertices;
 using osu.Framework.Graphics.Primitives;
-using RectangleF = osu.Framework.Graphics.Primitives.RectangleF;
 using OpenTK;
 using OpenTK.Graphics.ES30;
-using osu.Framework.Graphics.Colour;
-using osu.Framework.Graphics.OpenGL.Vertices;
+using PixelFormat = System.Drawing.Imaging.PixelFormat;
+using RectangleF = osu.Framework.Graphics.Primitives.RectangleF;
 
 namespace osu.Framework.Graphics.Textures
 {
     public class Texture : IDisposable
     {
         private static TextureWhitePixel whitePixel;
+
+        private static readonly byte[] white_pixel_pixels = { 255, 255, 255, 255 };
 
         public static Texture WhitePixel
         {
@@ -27,7 +30,7 @@ namespace osu.Framework.Graphics.Textures
                 {
                     TextureAtlas atlas = new TextureAtlas(3, 3, true);
                     whitePixel = atlas.GetWhitePixel();
-                    whitePixel.SetData(new TextureUploadByteArray(new byte[] { 255, 255, 255, 255 }));
+                    whitePixel.SetData(new TextureUploadByteArray(white_pixel_pixels));
                 }
 
                 return whitePixel;
@@ -133,7 +136,7 @@ namespace osu.Framework.Graphics.Textures
             int width = Math.Min(bitmap.Width, Width);
             int height = Math.Min(bitmap.Height, Height);
 
-            BitmapData bData = bitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            BitmapData bData = bitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
             TextureUploadByteArray upload = new TextureUploadByteArray(width * height * 4)
             {
