@@ -321,20 +321,8 @@ namespace osu.Framework.Graphics.OpenGL.Textures
 
             while (uploadQueue.TryDequeue(out TextureUpload upload))
             {
-                IntPtr dataPointer;
-                GCHandle? h0;
-
-                if (upload.Data.Length == 0)
-                {
-                    h0 = null;
-                    dataPointer = IntPtr.Zero;
-                }
-                else
-                {
-                    h0 = GCHandle.Alloc(upload.Data, GCHandleType.Pinned);
-                    dataPointer = h0.Value.AddrOfPinnedObject();
-                    didUpload = true;
-                }
+                IntPtr dataPointer = upload.GetPointer();
+                didUpload = dataPointer != IntPtr.Zero;
 
                 try
                 {
@@ -405,7 +393,6 @@ namespace osu.Framework.Graphics.OpenGL.Textures
                 }
                 finally
                 {
-                    h0?.Free();
                     upload.Dispose();
                 }
             }
