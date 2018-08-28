@@ -106,7 +106,7 @@
     <PackageReference Include="Xamarin.Android.Support.Design" Version="27.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\osu-framework-android\osu.framework.android.csproj">
+    <ProjectReference Include="..\osu.framework.android\osu.framework.android.csproj">
       <Project>{42eaa067-e0ce-40b5-9ffd-11162b91d2b9}</Project>
       <Name>osu.framework.android</Name>
     </ProjectReference>
