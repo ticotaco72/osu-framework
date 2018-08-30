@@ -48,6 +48,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Mono.Android">
+      <HintPath>Mono.Android.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing.Common">
       <HintPath>System.Drawing.Common.dll</HintPath>
     </Reference>
