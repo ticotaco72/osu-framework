@@ -3,6 +3,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <OutputType>WinExe</OutputType>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <Configurations>Debug;Release;x</Configurations>
   </PropertyGroup>
   <ItemGroup Label="Project References">
     <ProjectReference Include="..\osu.Framework\osu.Framework.csproj" />

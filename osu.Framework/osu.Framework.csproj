@@ -1,6 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup Label="Project">
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;</TargetFrameworks>
     <OutputType>Library</OutputType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -8,6 +8,7 @@
     <AssemblyName>osu.Framework</AssemblyName>
     <Description>A 2D application/game framework written with rhythm games in mind.</Description>
     <Product>osu!framework</Product>
+    <Configurations>Debug;Release;x</Configurations>
   </PropertyGroup>
   <PropertyGroup Label="Nuget">
     <Title>osu!framework</Title>
@@ -21,6 +22,10 @@
     <PackageTags>osu game framework</PackageTags>
   </PropertyGroup>
   <ItemGroup Label="Package References">
+    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.6.47">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0004" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="2.7.0" />
     <PackageReference Include="ppy.OpenTK.NS20" Version="1.0.6" />
@@ -51,5 +56,8 @@
     <Reference Include="System.Drawing.Common">
       <HintPath>System.Drawing.Common.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Platform\Android\Native\" />
   </ItemGroup>
 </Project>
