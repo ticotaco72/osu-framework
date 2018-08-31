@@ -4,7 +4,7 @@ using System.Text;
 
 namespace osu.Framework.Platform.Android
 {
-    class AndroidGameWindow : GameWindow
-    {
-    }
+    //class AndroidGameWindow : GameWindow
+    //{
+    //}
 }

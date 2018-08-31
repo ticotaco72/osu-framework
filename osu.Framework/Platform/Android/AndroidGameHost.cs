@@ -4,7 +4,7 @@ using System.Text;
 
 namespace osu.Framework.Platform.Android
 {
-    class AndroidGameHost : GameHost
-    {
-    }
+    //class AndroidGameHost : GameHost
+    //{
+    //}
 }
