@@ -2,6 +2,7 @@
   <PropertyGroup Label="Project">
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <OutputType>WinExe</OutputType>
+    <Configurations>Debug;Release;x</Configurations>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateProgramFile>false</GenerateProgramFile>
