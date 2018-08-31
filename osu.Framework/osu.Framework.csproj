@@ -1,6 +1,6 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup Label="Project">
-    <TargetFrameworks>netstandard2.0;</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;xamarin.android8.1</TargetFrameworks>
     <OutputType>Library</OutputType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -21,7 +21,7 @@
     <PackageTags>osu game framework</PackageTags>
   </PropertyGroup>
   <ItemGroup Label="Package References">
-    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.5.4">
+    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.6.47">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
