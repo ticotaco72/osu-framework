@@ -2,7 +2,7 @@
 using Android.Widget;
 using Android.OS;
 using Android.Support.V7.App;
-using osu.Framework.Platform;
+using osu.Framework.Platform.Android;
 using osu.Framework;
 
 namespace SampleGame.android

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup Label="Project">
-    <TargetFrameworks>netstandard2.0;xamarin.android8.1</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;</TargetFrameworks>
     <OutputType>Library</OutputType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
