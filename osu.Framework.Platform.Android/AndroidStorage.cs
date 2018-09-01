@@ -15,7 +15,7 @@ using System.IO;
 
 namespace osu.Framework.Platform.Android
 {
-    class AndroidStorage : Storage
+    /*class AndroidStorage : Storage
     {
         public AndroidStorage(string baseName)
             : base(baseName)
@@ -44,5 +44,5 @@ namespace osu.Framework.Platform.Android
         {
             return File.Exists(GetUsablePathFor(path));
         }
-    }
+    }*/
 }

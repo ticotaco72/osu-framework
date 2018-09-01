@@ -57,7 +57,4 @@
       <HintPath>System.Drawing.Common.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Platform\Android\Native\" />
-  </ItemGroup>
 </Project>
