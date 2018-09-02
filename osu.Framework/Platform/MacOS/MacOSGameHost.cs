@@ -9,7 +9,7 @@ namespace osu.Framework.Platform.MacOS
 {
     public class MacOSGameHost : DesktopGameHost
     {
-        internal MacOSGameHost(string gameName, bool bindIPC = false)
+        public MacOSGameHost(string gameName, bool bindIPC = false)
             : base(gameName, bindIPC)
         {
             Window = new MacOSGameWindow();

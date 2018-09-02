@@ -9,7 +9,7 @@ using System;
 
 namespace osu.Framework
 {
-    public static class Host
+    public static partial class Host 
     {
         public static DesktopGameHost GetSuitableHost(string gameName, bool bindIPC = false)
         {
