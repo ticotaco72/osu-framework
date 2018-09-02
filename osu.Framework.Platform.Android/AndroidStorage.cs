@@ -29,10 +29,9 @@ namespace osu.Framework.Platform.Android
             return (string)Application.Context.GetExternalFilesDir("");
         }
 
-        public override string[] GetFiles(string path)
-        {
-            return (string[])Directory.EnumerateFiles(path);
-        }
+        public override string[] GetFiles(string path) => (string[])Directory.EnumerateFiles(GetUsablePathFor(path));
+
+        public override string[] GetDirectories(string path) => Directory.GetDirectories(GetUsablePathFor(path));
 
         public override void Delete(string path)
         {
@@ -42,6 +41,46 @@ namespace osu.Framework.Platform.Android
         public override bool Exists(string path)
         {
             return File.Exists(GetUsablePathFor(path));
+        }
+
+        public override void DeleteDirectory(string path)
+        {
+            path = GetUsablePathFor(path);
+
+            // handles the case where the directory doesn't exist, which will throw a DirectoryNotFoundException.
+            if (Directory.Exists(path))
+                Directory.Delete(path, true);
+        }
+
+        public override bool ExistsDirectory(string path) => Directory.Exists(GetUsablePathFor(path));
+
+        public override Stream GetStream(string path, FileAccess access = FileAccess.Read, FileMode mode = FileMode.OpenOrCreate)
+        {
+            path = GetUsablePathFor(path, access != FileAccess.Read);
+
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentNullException(nameof(path));
+
+            switch (access)
+            {
+                case FileAccess.Read:
+                    if (!File.Exists(path)) return null;
+                    return File.Open(path, FileMode.Open, access, FileShare.Read);
+                default:
+                    return File.Open(path, mode, access);
+            }
+        }
+
+        public override string GetDatabaseConnectionString(string name)
+        {
+            return string.Concat("Data Source=", GetUsablePathFor($@"{name}.db", true));
+        }
+
+        public override void DeleteDatabase(string name) => Delete($@"{name}.db");
+
+        public override void OpenInNativeExplorer()
+        {
+            throw new NotImplementedException();
         }
     }
 }
