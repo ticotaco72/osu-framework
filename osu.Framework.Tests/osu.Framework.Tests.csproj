@@ -17,6 +17,6 @@
     <PackageReference Include="Appveyor.TestLogger" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\osu.Framework.NS20\osu.Framework.NS20.csproj" />
+    <ProjectReference Include="..\osu.Framework\osu.Framework.csproj" />
   </ItemGroup>
 </Project>

@@ -16,7 +16,7 @@ namespace osu.Framework.Platform.Windows
 
         public override bool CapsLockEnabled => Console.CapsLock;
 
-        public WindowsGameHost(string gameName, bool bindIPC = false)
+        internal WindowsGameHost(string gameName, bool bindIPC = false)
             : base(gameName, bindIPC)
         {
             // OnActivate / OnDeactivate may not fire, so the initial activity state may be unknown here.

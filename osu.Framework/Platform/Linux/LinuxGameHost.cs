@@ -7,7 +7,7 @@ namespace osu.Framework.Platform.Linux
 {
     public class LinuxGameHost : DesktopGameHost
     {
-        public LinuxGameHost(string gameName, bool bindIPC = false)
+        internal LinuxGameHost(string gameName, bool bindIPC = false)
             : base(gameName, bindIPC)
         {
             Window = new LinuxGameWindow();
