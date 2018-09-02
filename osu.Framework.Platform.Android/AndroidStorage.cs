@@ -15,7 +15,7 @@ using System.IO;
 
 namespace osu.Framework.Platform.Android
 {
-    /*class AndroidStorage : Storage
+    class AndroidStorage : Storage
     {
         public AndroidStorage(string baseName)
             : base(baseName)
@@ -26,8 +26,7 @@ namespace osu.Framework.Platform.Android
 
         protected override string LocateBasePath()
         {
-            var context = Context;
-            return context.GetExternalFilesDir();
+            return (string)Application.Context.GetExternalFilesDir("");
         }
 
         public override string[] GetFiles(string path)
@@ -44,5 +43,5 @@ namespace osu.Framework.Platform.Android
         {
             return File.Exists(GetUsablePathFor(path));
         }
-    }*/
+    }
 }
