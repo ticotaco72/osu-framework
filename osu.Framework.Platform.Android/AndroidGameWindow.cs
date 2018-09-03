@@ -13,7 +13,8 @@ using osu.Framework.Platform;
 
 namespace osu.Framework.Platform.Android
 {
-    class AndroidGameWindow : GameWindow
+    class AndroidGameWindow : DesktopGameWindow
     {
+        //will see if there's something to change
     }
 }

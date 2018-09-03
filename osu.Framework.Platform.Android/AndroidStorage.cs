@@ -15,11 +15,13 @@ using System.IO;
 
 namespace osu.Framework.Platform.Android
 {
-    class AndroidStorage : Storage
+    //maybe change to DesktopStorage, cause most functions is copy-pasted
+    class AndroidStorage : DesktopStorage
     {
-        public AndroidStorage(string baseName)
-            : base(baseName)
+        public AndroidStorage(string baseName, GameHost host)
+            : base(baseName, host)
         {
+            BasePath = LocateBasePath();
         }
 
         //Dopilnuj, aby zamieniać ścieżki względne na bezwzględne
@@ -29,7 +31,7 @@ namespace osu.Framework.Platform.Android
             return (string)Application.Context.GetExternalFilesDir("");
         }
 
-        public override string[] GetFiles(string path) => (string[])Directory.EnumerateFiles(GetUsablePathFor(path));
+        /*public override string[] GetFiles(string path) => (string[])Directory.EnumerateFiles(GetUsablePathFor(path));
 
         public override string[] GetDirectories(string path) => Directory.GetDirectories(GetUsablePathFor(path));
 
@@ -76,7 +78,7 @@ namespace osu.Framework.Platform.Android
             return string.Concat("Data Source=", GetUsablePathFor($@"{name}.db", true));
         }
 
-        public override void DeleteDatabase(string name) => Delete($@"{name}.db");
+        public override void DeleteDatabase(string name) => Delete($@"{name}.db");*/
 
         public override void OpenInNativeExplorer()
         {
