@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AndroidClipboard.cs" />
     <Compile Include="AndroidGameWindow.cs" />
     <Compile Include="AndroidStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
