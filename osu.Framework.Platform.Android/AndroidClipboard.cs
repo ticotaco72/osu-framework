@@ -18,12 +18,23 @@ namespace osu.Framework.Platform.Android
         public override string GetText()
         {
             ClipboardManager clipboard = (ClipboardManager) Application.Context.GetSystemService("clipboard");
-            return "";
+
+            if (!clipboard.HasPrimaryClip)
+            {
+                return "";
+                
+            }
+            else
+            {
+                return clipboard.PrimaryClip.GetItemAt(0).CoerceToText(Application.Context);
+            }
         }
 
         public override void SetText(string selectedText)
         {
-            throw new NotImplementedException();
+            ClipboardManager clipboard = (ClipboardManager)Application.Context.GetSystemService("clipboard");
+            ClipData clip = ClipData.NewPlainText("text", selectedText);
+            clipboard.PrimaryClip = clip;
         }
     }
 }
