@@ -59,6 +59,7 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SampleGame.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -99,9 +100,9 @@
       <Project>{77e7c43f-14e2-44f0-a160-15f6a9c9e585}</Project>
       <Name>osu.Framework.Platform.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SampleGame\SampleGame.csproj">
-      <Project>{2a66dd92-adb1-4994-89e2-c94e04acda0d}</Project>
-      <Name>SampleGame</Name>
+    <ProjectReference Include="..\osu.Framework\osu.Framework.csproj">
+      <Project>{c76bf5b3-985e-4d39-95fe-97c9c879b83a}</Project>
+      <Name>osu.Framework</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
