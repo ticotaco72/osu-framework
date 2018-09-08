@@ -40,7 +40,7 @@
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
     <Reference Include="OpenTK106">
-      <HintPath>..\OpenTK106.dll</HintPath>
+      <HintPath>.\OpenTK106.dll</HintPath>
       <Aliases>PPY</Aliases>
     </Reference>
     <Reference Include="System" />
