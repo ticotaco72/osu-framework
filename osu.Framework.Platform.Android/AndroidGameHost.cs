@@ -1,9 +1,9 @@
-﻿extern alias PPY;
+﻿//extern alias PPY;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PPY::OpenTK;
+//using PPY::OpenTK;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -26,7 +26,7 @@ namespace osu.Framework.Platform.Android
             Window = new AndroidGameWindow();
             Window.WindowStateChanged += (sender, e) =>
             {
-                if (Window.WindowState != PPY::OpenTK.WindowState.Minimized)
+                if (Window.WindowState != OpenTK.WindowState.Minimized)
                     OnActivated();
                 else
                     OnDeactivated();
