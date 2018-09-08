@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleGame.android", "Sampl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu.Framework.Platform.Android", "osu.Framework.Platform.Android\osu.Framework.Platform.Android.csproj", "{77E7C43F-14E2-44F0-A160-15F6A9C9E585}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleGame.Android1", "SampleGame.Android1\SampleGame.Android1.csproj", "{78FBD38D-BCFF-41B7-9202-D344BE2BA588}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,15 @@ Global
 		{77E7C43F-14E2-44F0-A160-15F6A9C9E585}.Release|Any CPU.Build.0 = Release|Any CPU
 		{77E7C43F-14E2-44F0-A160-15F6A9C9E585}.x|Any CPU.ActiveCfg = Release|Any CPU
 		{77E7C43F-14E2-44F0-A160-15F6A9C9E585}.x|Any CPU.Build.0 = Release|Any CPU
+		{78FBD38D-BCFF-41B7-9202-D344BE2BA588}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78FBD38D-BCFF-41B7-9202-D344BE2BA588}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78FBD38D-BCFF-41B7-9202-D344BE2BA588}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{78FBD38D-BCFF-41B7-9202-D344BE2BA588}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78FBD38D-BCFF-41B7-9202-D344BE2BA588}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78FBD38D-BCFF-41B7-9202-D344BE2BA588}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{78FBD38D-BCFF-41B7-9202-D344BE2BA588}.x|Any CPU.ActiveCfg = Release|Any CPU
+		{78FBD38D-BCFF-41B7-9202-D344BE2BA588}.x|Any CPU.Build.0 = Release|Any CPU
+		{78FBD38D-BCFF-41B7-9202-D344BE2BA588}.x|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
