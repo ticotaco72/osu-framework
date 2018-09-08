@@ -39,6 +39,10 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
+    <Reference Include="OpenTK106">
+      <HintPath>..\OpenTK106.dll</HintPath>
+      <Aliases>PPY</Aliases>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing.Common">
@@ -49,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AndroidClipboard.cs" />
+    <Compile Include="AndroidGameHost.cs" />
     <Compile Include="AndroidGameWindow.cs" />
     <Compile Include="AndroidStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -98,12 +103,25 @@
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="27.0.2.1" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedNativeLibrary Include="lib\armeabi-v7a\libbass.so" />
+    <EmbeddedNativeLibrary Include="lib\armeabi-v7a\libbass_fx.so" />
+    <EmbeddedNativeLibrary Include="lib\x86\libbass.so" />
+    <EmbeddedNativeLibrary Include="lib\x86\libbass_fx.so" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\osu.Framework\osu.Framework.csproj">
       <Project>{c76bf5b3-985e-4d39-95fe-97c9c879b83a}</Project>
       <Name>osu.Framework</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedNativeLibrary Include="lib\armeabi\libbass.so" />
+    <EmbeddedNativeLibrary Include="lib\armeabi\libbass_fx.so" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedNativeLibrary Include="lib\arm64-v8a\libbass.so" />
+    <EmbeddedNativeLibrary Include="lib\arm64-v8a\libbass_fx.so" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
