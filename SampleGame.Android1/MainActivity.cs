@@ -4,11 +4,13 @@ using Android.Support.V7.App;
 using System;
 using osu.Framework.Platform;
 using osu.Framework;
+using Android.Runtime;
+using Android.Widget;
 
 namespace SampleGame
 {
-    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
-    public class MainActivity : AppCompatActivity
+    [Activity(MainLauncher = true)]
+    public class MainActivity : Activity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
