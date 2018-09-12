@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using osu.Framework.Input.Handlers;
 using osu.Framework.Platform;
-using OpenTK;
+using osuTK;
 
 namespace osu.Framework.Input
 {

@@ -8,11 +8,11 @@ using osu.Framework.MathUtils;
 using osu.Framework.Platform;
 using osu.Framework.Statistics;
 using osu.Framework.Threading;
-using OpenTK.Input;
+using osuTK.Input;
 
 namespace osu.Framework.Input.Handlers.Joystick
 {
-    public class OpenTKJoystickHandler : InputHandler
+    public class osuTKJoystickHandler : InputHandler
     {
         private ScheduledDelegate scheduled;
 
@@ -34,7 +34,7 @@ namespace osu.Framework.Input.Handlers.Joystick
                             if (device.RawState.Equals(device.LastRawState))
                                 continue;
 
-                            var newState = new OpenTKJoystickState(device);
+                            var newState = new osuTKJoystickState(device);
                             handleState(device, newState);
                             FrameStatistics.Increment(StatisticsCounterType.JoystickEvents);
                         }
@@ -105,9 +105,9 @@ namespace osu.Framework.Input.Handlers.Joystick
         public override bool IsActive => true;
         public override int Priority => 0;
 
-        private class OpenTKJoystickState : JoystickState
+        private class osuTKJoystickState : JoystickState
         {
-            public OpenTKJoystickState(JoystickDevice device)
+            public osuTKJoystickState(JoystickDevice device)
             {
                 // Populate axes
                 var axes = new List<JoystickAxis>();
@@ -158,17 +158,17 @@ namespace osu.Framework.Input.Handlers.Joystick
         private class JoystickDevice
         {
             /// <summary>
-            /// Amount of axes supported by OpenTK.
+            /// Amount of axes supported by osuTK.
             /// </summary>
             public const int MAX_AXES = 64;
 
             /// <summary>
-            /// Amount of buttons supported by OpenTK.
+            /// Amount of buttons supported by osuTK.
             /// </summary>
             public const int MAX_BUTTONS = 64;
 
             /// <summary>
-            /// Amount of hats supported by OpenTK.
+            /// Amount of hats supported by osuTK.
             /// </summary>
             public const int MAX_HATS = 4;
 
@@ -181,7 +181,7 @@ namespace osu.Framework.Input.Handlers.Joystick
             /// The last state of this <see cref="JoystickDevice"/>.
             /// This is updated with ever invocation of <see cref="Refresh"/>.
             /// </summary>
-            public OpenTK.Input.JoystickState? LastRawState { get; private set; }
+            public osuTK.Input.JoystickState? LastRawState { get; private set; }
 
             public JoystickState LastState { get; set; }
 
@@ -189,7 +189,7 @@ namespace osu.Framework.Input.Handlers.Joystick
             /// The current state of this <see cref="JoystickDevice"/>.
             /// Use <see cref="Refresh"/> to update the state.
             /// </summary>
-            public OpenTK.Input.JoystickState RawState { get; private set; }
+            public osuTK.Input.JoystickState RawState { get; private set; }
 
             private readonly Lazy<float[]> defaultDeadZones = new Lazy<float[]>(() => new float[MAX_AXES]);
 
@@ -215,8 +215,8 @@ namespace osu.Framework.Input.Handlers.Joystick
             {
                 this.deviceIndex = deviceIndex;
 
-                Capabilities = OpenTK.Input.Joystick.GetCapabilities(deviceIndex);
-                Guid = OpenTK.Input.Joystick.GetGuid(deviceIndex);
+                Capabilities = osuTK.Input.Joystick.GetCapabilities(deviceIndex);
+                Guid = osuTK.Input.Joystick.GetGuid(deviceIndex);
 
                 Refresh();
             }
@@ -227,7 +227,7 @@ namespace osu.Framework.Input.Handlers.Joystick
             public void Refresh()
             {
                 LastRawState = RawState;
-                RawState = OpenTK.Input.Joystick.GetState(deviceIndex);
+                RawState = osuTK.Input.Joystick.GetState(deviceIndex);
 
                 if (!defaultDeadZones.IsValueCreated)
                 {

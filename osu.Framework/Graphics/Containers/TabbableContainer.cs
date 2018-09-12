@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using osu.Framework.Input;
-using OpenTK.Input;
+using osuTK.Input;
 
 namespace osu.Framework.Graphics.Containers
 {

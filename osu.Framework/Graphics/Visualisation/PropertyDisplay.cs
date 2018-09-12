@@ -8,8 +8,8 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
-using OpenTK;
-using OpenTK.Graphics;
+using osuTK;
+using osuTK.Graphics;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Extensions.TypeExtensions;
 

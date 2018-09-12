@@ -4,8 +4,8 @@
 using System;
 using System.Collections.Generic;
 using osu.Framework.Graphics.OpenGL.Textures;
-using OpenTK;
-using OpenTK.Graphics.ES30;
+using osuTK;
+using osuTK.Graphics.ES30;
 
 namespace osu.Framework.Graphics.OpenGL.Buffers
 {

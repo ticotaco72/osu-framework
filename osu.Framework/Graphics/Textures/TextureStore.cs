@@ -7,7 +7,7 @@ using osu.Framework.Graphics.OpenGL.Textures;
 using osu.Framework.IO.Stores;
 using System;
 using System.Threading;
-using OpenTK.Graphics.ES30;
+using osuTK.Graphics.ES30;
 
 namespace osu.Framework.Graphics.Textures
 {

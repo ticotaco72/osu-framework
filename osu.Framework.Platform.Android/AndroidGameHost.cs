@@ -11,6 +11,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using osu.Framework.Platform;
+using osuTK;
 
 namespace osu.Framework.Platform.Android
 {
@@ -26,7 +27,7 @@ namespace osu.Framework.Platform.Android
             Window = new AndroidGameWindow();
             Window.WindowStateChanged += (sender, e) =>
             {
-                if (Window.WindowState != OpenTK.WindowState.Minimized)
+                if (Window.WindowState != osuTK.WindowState.Minimized)
                     OnActivated();
                 else
                     OnDeactivated();

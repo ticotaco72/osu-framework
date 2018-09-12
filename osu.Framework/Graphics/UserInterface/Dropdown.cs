@@ -7,7 +7,7 @@ using System.Linq;
 using osu.Framework.Configuration;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Input;
-using OpenTK.Graphics;
+using osuTK.Graphics;
 using osu.Framework.Extensions.IEnumerableExtensions;
 
 namespace osu.Framework.Graphics.UserInterface

@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using osu.Framework.Allocation;
 using SixLabors.ImageSharp;
-using PixelFormat = OpenTK.Graphics.ES30.PixelFormat;
+using PixelFormat = osuTK.Graphics.ES30.PixelFormat;
 
 namespace osu.Framework.Graphics.Textures
 {

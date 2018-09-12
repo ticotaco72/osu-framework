@@ -35,8 +35,8 @@ namespace osu.Framework.Platform.MacOS
             {
                 flagsChangedHandler = flagsChanged;
 
-                var fieldImplementation = typeof(OpenTK.NativeWindow).GetRuntimeFields().Single(x => x.Name == "implementation");
-                var typeCocoaNativeWindow = typeof(OpenTK.NativeWindow).Assembly.GetTypes().Single(x => x.Name == "CocoaNativeWindow");
+                var fieldImplementation = typeof(osuTK.NativeWindow).GetRuntimeFields().Single(x => x.Name == "implementation");
+                var typeCocoaNativeWindow = typeof(osuTK.NativeWindow).Assembly.GetTypes().Single(x => x.Name == "CocoaNativeWindow");
                 var fieldWindowClass = typeCocoaNativeWindow.GetRuntimeFields().Single(x => x.Name == "windowClass");
 
                 nativeWindow = fieldImplementation.GetValue(Implementation);
@@ -60,47 +60,47 @@ namespace osu.Framework.Platform.MacOS
             var keyCode = Cocoa.SendInt(sender, selKeyCode);
 
             bool keyDown;
-            OpenTK.Input.Key key;
+            osuTK.Input.Key key;
 
             switch ((MacOSKeyCodes)keyCode)
             {
                 case MacOSKeyCodes.LShift:
-                    key = OpenTK.Input.Key.LShift;
+                    key = osuTK.Input.Key.LShift;
                     keyDown = modifierFlags.HasFlag(CocoaKeyModifiers.LeftShift);
                     break;
 
                 case MacOSKeyCodes.RShift:
-                    key = OpenTK.Input.Key.RShift;
+                    key = osuTK.Input.Key.RShift;
                     keyDown = modifierFlags.HasFlag(CocoaKeyModifiers.RightShift);
                     break;
 
                 case MacOSKeyCodes.LControl:
-                    key = OpenTK.Input.Key.LControl;
+                    key = osuTK.Input.Key.LControl;
                     keyDown = modifierFlags.HasFlag(CocoaKeyModifiers.LeftControl);
                     break;
 
                 case MacOSKeyCodes.RControl:
-                    key = OpenTK.Input.Key.RControl;
+                    key = osuTK.Input.Key.RControl;
                     keyDown = modifierFlags.HasFlag(CocoaKeyModifiers.RightControl);
                     break;
 
                 case MacOSKeyCodes.LAlt:
-                    key = OpenTK.Input.Key.LAlt;
+                    key = osuTK.Input.Key.LAlt;
                     keyDown = modifierFlags.HasFlag(CocoaKeyModifiers.LeftAlt);
                     break;
 
                 case MacOSKeyCodes.RAlt:
-                    key = OpenTK.Input.Key.RAlt;
+                    key = osuTK.Input.Key.RAlt;
                     keyDown = modifierFlags.HasFlag(CocoaKeyModifiers.RightAlt);
                     break;
 
                 case MacOSKeyCodes.LCommand:
-                    key = OpenTK.Input.Key.LWin;
+                    key = osuTK.Input.Key.LWin;
                     keyDown = modifierFlags.HasFlag(CocoaKeyModifiers.LeftCommand);
                     break;
 
                 case MacOSKeyCodes.RCommand:
-                    key = OpenTK.Input.Key.RWin;
+                    key = osuTK.Input.Key.RWin;
                     keyDown = modifierFlags.HasFlag(CocoaKeyModifiers.RightCommand);
                     break;
 

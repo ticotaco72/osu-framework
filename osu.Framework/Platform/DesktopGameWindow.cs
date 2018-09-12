@@ -6,8 +6,8 @@ using System.Drawing;
 using System.IO;
 using osu.Framework.Configuration;
 using osu.Framework.Input;
-using OpenTK;
-using OpenTK.Graphics;
+using osuTK;
+using osuTK.Graphics;
 
 namespace osu.Framework.Platform
 {
@@ -28,7 +28,7 @@ namespace osu.Framework.Platform
 
         internal override IGraphicsContext Context => Implementation.Context;
 
-        protected new OpenTK.GameWindow Implementation => (OpenTK.GameWindow)base.Implementation;
+        protected new osuTK.GameWindow Implementation => (osuTK.GameWindow)base.Implementation;
 
         public readonly BindableBool MapAbsoluteInputToWindow = new BindableBool();
 
@@ -89,7 +89,7 @@ namespace osu.Framework.Platform
 
             if (newResolution.Width == currentDisplay.Width && newResolution.Height == currentDisplay.Height)
             {
-                // we wanted a new resolution but got the old one, which means OpenTK didn't find this resolution
+                // we wanted a new resolution but got the old one, which means osuTK didn't find this resolution
                 currentDisplay.RestoreResolution();
             }
             else

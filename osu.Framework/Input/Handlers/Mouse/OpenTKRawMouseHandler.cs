@@ -8,12 +8,12 @@ using System.Linq;
 using osu.Framework.Configuration;
 using osu.Framework.Platform;
 using osu.Framework.Threading;
-using OpenTK;
-using OpenTK.Input;
+using osuTK;
+using osuTK.Input;
 
 namespace osu.Framework.Input.Handlers.Mouse
 {
-    internal class OpenTKRawMouseHandler : OpenTKMouseHandlerBase, IHasCursorSensitivity, INeedsMousePositionFeedback
+    internal class osuTKRawMouseHandler : osuTKMouseHandlerBase, IHasCursorSensitivity, INeedsMousePositionFeedback
     {
         private ScheduledDelegate scheduled;
 
@@ -26,8 +26,8 @@ namespace osu.Framework.Input.Handlers.Mouse
         private readonly BindableBool mapAbsoluteInputToWindow = new BindableBool();
 
         private int mostSeenStates;
-        private readonly List<OpenTKMouseState> lastEachDeviceStates = new List<OpenTKMouseState>();
-        private OpenTKMouseState lastUnfocusedState;
+        private readonly List<osuTKMouseState> lastEachDeviceStates = new List<osuTKMouseState>();
+        private osuTKMouseState lastUnfocusedState;
 
         public override bool Initialize(GameHost host)
         {
@@ -52,11 +52,11 @@ namespace osu.Framework.Input.Handlers.Mouse
 
                         if ((MouseInWindow || lastEachDeviceStates.Any(s => s != null && s.HasAnyButtonPressed)) && host.Window.Focused)
                         {
-                            var newRawStates = new List<OpenTK.Input.MouseState>(mostSeenStates + 1);
+                            var newRawStates = new List<osuTK.Input.MouseState>(mostSeenStates + 1);
 
                             for (int i = 0; i <= mostSeenStates + 1; i++)
                             {
-                                var s = OpenTK.Input.Mouse.GetState(i);
+                                var s = osuTK.Input.Mouse.GetState(i);
                                 if (s.IsConnected || i < mostSeenStates)
                                 {
                                     newRawStates.Add(s);
@@ -81,7 +81,7 @@ namespace osu.Framework.Input.Handlers.Mouse
                                 if (lastState != null && rawState.Equals(lastState.RawState))
                                     continue;
 
-                                var newState = new OpenTKPollMouseState(rawState, host.IsActive, getUpdatedPosition(rawState, lastState));
+                                var newState = new osuTKPollMouseState(rawState, host.IsActive, getUpdatedPosition(rawState, lastState));
 
                                 HandleState(newState, lastState, rawState.Flags.HasFlag(MouseStateFlags.MoveAbsolute));
 
@@ -91,10 +91,10 @@ namespace osu.Framework.Input.Handlers.Mouse
                         }
                         else
                         {
-                            var state = OpenTK.Input.Mouse.GetCursorState();
+                            var state = osuTK.Input.Mouse.GetCursorState();
                             var screenPoint = host.Window.PointToClient(new Point(state.X, state.Y));
 
-                            var newState = new UnfocusedMouseState(new OpenTK.Input.MouseState(), host.IsActive, new Vector2(screenPoint.X, screenPoint.Y));
+                            var newState = new UnfocusedMouseState(new osuTK.Input.MouseState(), host.IsActive, new Vector2(screenPoint.X, screenPoint.Y));
 
                             HandleState(newState, lastUnfocusedState, true);
 
@@ -122,10 +122,10 @@ namespace osu.Framework.Input.Handlers.Mouse
 
             var screenPoint = Host.Window.PointToScreen(new Point((int)position.X, (int)position.Y));
 
-            OpenTK.Input.Mouse.SetPosition(screenPoint.X, screenPoint.Y);
+            osuTK.Input.Mouse.SetPosition(screenPoint.X, screenPoint.Y);
         }
 
-        private Vector2 getUpdatedPosition(OpenTK.Input.MouseState state, OpenTKMouseState lastState)
+        private Vector2 getUpdatedPosition(osuTK.Input.MouseState state, osuTKMouseState lastState)
         {
             Vector2 currentPosition;
 
@@ -164,7 +164,7 @@ namespace osu.Framework.Input.Handlers.Mouse
                 {
                     // when we return from being outside of the window, we want to set the new position of our game cursor
                     // to where the OS cursor is, just once.
-                    var cursorState = OpenTK.Input.Mouse.GetCursorState();
+                    var cursorState = osuTK.Input.Mouse.GetCursorState();
                     var screenPoint = Host.Window.PointToClient(new Point(cursorState.X, cursorState.Y));
                     currentPosition = new Vector2(screenPoint.X, screenPoint.Y);
                 }
@@ -177,9 +177,9 @@ namespace osu.Framework.Input.Handlers.Mouse
             return currentPosition;
         }
 
-        private class UnfocusedMouseState : OpenTKMouseState
+        private class UnfocusedMouseState : osuTKMouseState
         {
-            public UnfocusedMouseState(OpenTK.Input.MouseState tkState, bool active, Vector2? mappedPosition)
+            public UnfocusedMouseState(osuTK.Input.MouseState tkState, bool active, Vector2? mappedPosition)
                 : base(tkState, active, mappedPosition)
             {
             }

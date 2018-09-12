@@ -8,7 +8,7 @@ using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Logging;
-using OpenTK;
+using osuTK;
 
 namespace osu.Framework.Input.Bindings
 {

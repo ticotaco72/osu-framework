@@ -4,8 +4,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenTK;
-using OpenTK.Input;
+using osuTK;
+using osuTK.Input;
 
 namespace osu.Framework.Input.Bindings
 {

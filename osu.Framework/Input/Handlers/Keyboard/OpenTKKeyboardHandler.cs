@@ -6,18 +6,18 @@ using System.Collections.Generic;
 using System.Linq;
 using osu.Framework.Platform;
 using osu.Framework.Statistics;
-using OpenTK.Input;
+using osuTK.Input;
 
 namespace osu.Framework.Input.Handlers.Keyboard
 {
-    internal class OpenTKKeyboardHandler : InputHandler
+    internal class osuTKKeyboardHandler : InputHandler
     {
         public override bool IsActive => true;
 
         public override int Priority => 0;
 
         private TkKeyboardState lastEventState;
-        private OpenTK.Input.KeyboardState? lastRawState;
+        private osuTK.Input.KeyboardState? lastRawState;
 
         public override bool Initialize(GameHost host)
         {
@@ -61,7 +61,7 @@ namespace osu.Framework.Input.Handlers.Keyboard
         {
             private static readonly IEnumerable<Key> all_keys = Enum.GetValues(typeof(Key)).Cast<Key>();
 
-            public TkKeyboardState(OpenTK.Input.KeyboardState tkState)
+            public TkKeyboardState(osuTK.Input.KeyboardState tkState)
             {
                 if (tkState.IsAnyKeyDown)
                 {
