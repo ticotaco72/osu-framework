@@ -8,8 +8,8 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input;
 using osu.Framework.Testing;
-using OpenTK;
-using OpenTK.Graphics;
+using osuTK;
+using osuTK.Graphics;
 
 namespace osu.Framework.Tests.Visual
 {
@@ -81,7 +81,7 @@ namespace osu.Framework.Tests.Visual
                 sliderBar.IsHovered = true;
                 sliderBar.TriggerOnKeyDown(null, new KeyDownEventArgs
                 {
-                    Key = OpenTK.Input.Key.Left,
+                    Key = osuTK.Input.Key.Left,
                 });
                 sliderBar.IsHovered = before;
             });
@@ -98,7 +98,7 @@ namespace osu.Framework.Tests.Visual
                     {
                         Position = sliderBar.ToScreenSpace(drawSize)
                     },
-                    Keyboard = new KeyboardState { Keys = { OpenTK.Input.Key.LShift } }
+                    Keyboard = new KeyboardState { Keys = { osuTK.Input.Key.LShift } }
                 });
             });
 
