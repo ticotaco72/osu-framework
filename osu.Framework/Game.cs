@@ -15,7 +15,7 @@ using osu.Framework.Platform;
 using osu.Framework.Allocation;
 using osu.Framework.Configuration;
 using osu.Framework.Input.Bindings;
-using OpenTK;
+using osuTK;
 using GameWindow = osu.Framework.Platform.GameWindow;
 
 namespace osu.Framework

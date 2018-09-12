@@ -3,7 +3,7 @@
 
 using System;
 using System.IO;
-using OpenTK.Graphics.ES30;
+using osuTK.Graphics.ES30;
 using osu.Framework.Graphics.OpenGL.Textures;
 
 namespace osu.Framework.Graphics.Textures

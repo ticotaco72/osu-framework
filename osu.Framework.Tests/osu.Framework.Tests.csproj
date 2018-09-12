@@ -19,4 +19,9 @@
   <ItemGroup>
     <ProjectReference Include="..\osu.Framework\osu.Framework.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="osuTK">
+      <HintPath>..\osu.Framework\osuTK.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

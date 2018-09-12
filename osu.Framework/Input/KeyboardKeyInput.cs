@@ -2,7 +2,7 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System.Collections.Generic;
-using OpenTK.Input;
+using osuTK.Input;
 
 namespace osu.Framework.Input
 {

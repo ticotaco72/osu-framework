@@ -49,6 +49,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="osuTK">
+      <HintPath>osuTK.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing.Common">
       <HintPath>System.Drawing.Common.dll</HintPath>
     </Reference>

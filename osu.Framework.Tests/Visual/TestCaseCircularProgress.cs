@@ -9,7 +9,7 @@ using osu.Framework.Graphics.OpenGL.Textures;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Testing;
-using OpenTK.Graphics;
+using osuTK.Graphics;
 
 namespace osu.Framework.Tests.Visual
 {

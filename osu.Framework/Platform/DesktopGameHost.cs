@@ -117,14 +117,14 @@ namespace osu.Framework.Platform
         {
             var defaultEnabled = new InputHandler[]
             {
-                new OpenTKMouseHandler(),
-                new OpenTKKeyboardHandler(),
-                new OpenTKJoystickHandler(),
+                new osuTKMouseHandler(),
+                new osuTKKeyboardHandler(),
+                new osuTKJoystickHandler(),
             };
 
             var defaultDisabled = new InputHandler[]
             {
-                new OpenTKRawMouseHandler(),
+                new osuTKRawMouseHandler(),
             };
 
             foreach (var h in defaultDisabled)

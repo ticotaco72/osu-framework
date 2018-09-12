@@ -30,7 +30,7 @@ namespace osu.Framework.Platform.Windows
 
         private void onWindowOnWindowStateChanged(object sender, EventArgs e)
         {
-            if (Window.WindowState != OpenTK.WindowState.Minimized)
+            if (Window.WindowState != osuTK.WindowState.Minimized)
                 OnActivated();
             else
                 OnDeactivated();

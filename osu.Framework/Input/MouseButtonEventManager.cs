@@ -4,8 +4,8 @@
 using System;
 using System.Collections.Generic;
 using osu.Framework.Graphics;
-using OpenTK;
-using OpenTK.Input;
+using osuTK;
+using osuTK.Input;
 using System.Linq;
 using System.Diagnostics;
 using osu.Framework.Logging;

@@ -3,8 +3,8 @@
 
 using System;
 using osu.Framework.Extensions.MatrixExtensions;
-using OpenTK;
-using OpenTK.Graphics;
+using osuTK;
+using osuTK.Graphics;
 using osu.Framework.Graphics.Colour;
 using osu.Framework.Extensions.TypeExtensions;
 

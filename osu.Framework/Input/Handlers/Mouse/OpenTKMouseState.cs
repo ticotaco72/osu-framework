@@ -1,20 +1,20 @@
 // Copyright (c) 2007-2018 ppy Pty Ltd <contact@ppy.sh>.
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
-using OpenTK;
-using OpenTK.Input;
+using osuTK;
+using osuTK.Input;
 
 namespace osu.Framework.Input.Handlers.Mouse
 {
-    internal abstract class OpenTKMouseState : MouseState
+    internal abstract class osuTKMouseState : MouseState
     {
         public readonly bool WasActive;
 
-        public OpenTK.Input.MouseState RawState;
+        public osuTK.Input.MouseState RawState;
 
         public override Vector2 ScrollDelta => WasActive ? base.ScrollDelta : Vector2.Zero;
 
-        protected OpenTKMouseState(OpenTK.Input.MouseState tkState, bool active, Vector2? mappedPosition)
+        protected osuTKMouseState(osuTK.Input.MouseState tkState, bool active, Vector2? mappedPosition)
         {
             WasActive = active;
 

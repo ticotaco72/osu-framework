@@ -5,8 +5,8 @@ using System;
 using osu.Framework.Configuration;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Input;
-using OpenTK.Input;
-using OpenTK;
+using osuTK.Input;
+using osuTK;
 using System.Diagnostics;
 
 namespace osu.Framework.Graphics.UserInterface

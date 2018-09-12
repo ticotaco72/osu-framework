@@ -5,10 +5,10 @@ using System;
 using System.Diagnostics;
 using osu.Framework.Input;
 using osu.Framework.MathUtils;
-using OpenTK;
-using OpenTK.Graphics;
+using osuTK;
+using osuTK.Graphics;
 using osu.Framework.Graphics.Shapes;
-using OpenTK.Input;
+using osuTK.Input;
 
 namespace osu.Framework.Graphics.Containers
 {

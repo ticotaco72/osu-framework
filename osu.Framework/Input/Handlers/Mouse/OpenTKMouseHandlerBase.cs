@@ -3,11 +3,11 @@
 
 using osu.Framework.Platform;
 using osu.Framework.Statistics;
-using OpenTK;
+using osuTK;
 
 namespace osu.Framework.Input.Handlers.Mouse
 {
-    internal abstract class OpenTKMouseHandlerBase : InputHandler
+    internal abstract class osuTKMouseHandlerBase : InputHandler
     {
         protected GameHost Host;
         protected bool MouseInWindow;
@@ -25,7 +25,7 @@ namespace osu.Framework.Input.Handlers.Mouse
 
         private Vector2 currentPosition;
 
-        protected void HandleState(OpenTKMouseState state, OpenTKMouseState lastState, bool isAbsolutePosition)
+        protected void HandleState(osuTKMouseState state, osuTKMouseState lastState, bool isAbsolutePosition)
         {
             if (lastState == null || isAbsolutePosition)
             {

@@ -13,10 +13,10 @@ using System.Runtime;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
-using OpenTK;
-using OpenTK.Graphics;
-using OpenTK.Graphics.ES30;
-using OpenTK.Input;
+using osuTK;
+using osuTK.Graphics;
+using osuTK.Graphics.ES30;
+using osuTK.Input;
 using osu.Framework.Allocation;
 using osu.Framework.Configuration;
 using osu.Framework.Extensions.IEnumerableExtensions;
@@ -338,7 +338,7 @@ namespace osu.Framework.Platform
         }
 
         /// <summary>
-        /// Make a <see cref="Bitmap"/> object from the current OpenTK screen buffer
+        /// Make a <see cref="Bitmap"/> object from the current osuTK screen buffer
         /// </summary>
         /// <returns><see cref="Bitmap"/> object</returns>
         public async Task<Bitmap> TakeScreenshotAsync()
@@ -357,7 +357,7 @@ namespace osu.Framework.Platform
                 if (GraphicsContext.CurrentContext == null)
                     throw new GraphicsContextMissingException();
 
-                OpenTK.Graphics.OpenGL.GL.ReadPixels(0, 0, clientRectangle.Width, clientRectangle.Height, OpenTK.Graphics.OpenGL.PixelFormat.Bgr, OpenTK.Graphics.OpenGL.PixelType.UnsignedByte, data.Scan0);
+                osuTK.Graphics.OpenGL.GL.ReadPixels(0, 0, clientRectangle.Width, clientRectangle.Height, osuTK.Graphics.OpenGL.PixelFormat.Bgr, osuTK.Graphics.OpenGL.PixelType.UnsignedByte, data.Scan0);
                 complete = true;
             });
 

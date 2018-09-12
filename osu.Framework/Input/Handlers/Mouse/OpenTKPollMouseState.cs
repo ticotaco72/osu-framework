@@ -1,16 +1,16 @@
 // Copyright (c) 2007-2018 ppy Pty Ltd <contact@ppy.sh>.
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
-using OpenTK;
+using osuTK;
 
 namespace osu.Framework.Input.Handlers.Mouse
 {
     /// <summary>
-    /// An OpenTK state which was retrieved via polling.
+    /// An osuTK state which was retrieved via polling.
     /// </summary>
-    internal class OpenTKPollMouseState : OpenTKMouseState
+    internal class osuTKPollMouseState : osuTKMouseState
     {
-        public OpenTKPollMouseState(OpenTK.Input.MouseState tkState, bool active, Vector2? mappedPosition)
+        public osuTKPollMouseState(osuTK.Input.MouseState tkState, bool active, Vector2? mappedPosition)
             : base(tkState, active, mappedPosition)
         {
         }
