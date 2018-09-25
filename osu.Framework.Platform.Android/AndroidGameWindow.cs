@@ -22,9 +22,9 @@ namespace osu.Framework.Platform.Android
     class AndroidGameWindow : GameWindow
     {
         protected AndroidGameWindow()
-            :base (56, 89)
+            : base(56, 89)
         {
-            //something
+            //something;
         }
 
         public override DisplayDevice GetCurrentDisplay() => DisplayDevice.Default;
@@ -32,5 +32,15 @@ namespace osu.Framework.Platform.Android
         protected new osuTK.GameWindow Implementation => (osuTK.GameWindow)base.Implementation;
 
         internal override IGraphicsContext Context => Implementation.Context;
+
+        private void onExit()
+        {
+            DisplayDevice.Default.RestoreResolution();
+        }
+
+        public override void SetupWindow(FrameworkConfigManager config)
+        {
+            onExit();
+        }
     }
 }
