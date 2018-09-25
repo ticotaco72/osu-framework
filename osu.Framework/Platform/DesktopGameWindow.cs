@@ -26,7 +26,7 @@ namespace osu.Framework.Platform
 
         public readonly Bindable<ConfineMouseMode> ConfineMouseMode = new Bindable<ConfineMouseMode>();
 
-        internal override IGraphicsContext Context => Implementation.Context;
+        protected override IGraphicsContext Context => Implementation.Context;
 
         protected new osuTK.GameWindow Implementation => (osuTK.GameWindow)base.Implementation;
 

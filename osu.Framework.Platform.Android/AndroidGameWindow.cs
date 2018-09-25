@@ -12,9 +12,9 @@ using osu.Framework.Input;
 
 namespace osu.Framework.Platform.Android
 {
-    class AndroidGameWindow : GameWindow
+    public class AndroidGameWindow : GameWindow
     {
-        protected AndroidGameWindow()
+        internal AndroidGameWindow()
             : base(56, 89)
         {
             //something;
@@ -24,7 +24,7 @@ namespace osu.Framework.Platform.Android
 
         protected new osuTK.GameWindow Implementation => (osuTK.GameWindow)base.Implementation;
 
-        internal override IGraphicsContext Context => Implementation.Context;
+        protected override IGraphicsContext Context => Implementation.Context;
 
         private void onExit()
         {

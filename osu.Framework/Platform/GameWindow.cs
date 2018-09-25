@@ -23,7 +23,7 @@ namespace osu.Framework.Platform
         /// The <see cref="IGraphicsContext"/> associated with this <see cref="GameWindow"/>.
         /// </summary>
         [NotNull]
-        internal abstract IGraphicsContext Context { get; }
+        protected abstract IGraphicsContext Context { get; }
 
         /// <summary>
         /// Return value decides whether we should intercept and cancel this exit (if possible).

@@ -15,7 +15,7 @@ using osuTK;
 
 namespace osu.Framework.Platform.Android
 {
-    class AndroidGameHost : DesktopGameHost
+    public class AndroidGameHost : DesktopGameHost
     {
         protected override Storage GetStorage(string baseName) => new AndroidStorage(baseName, this);
 
