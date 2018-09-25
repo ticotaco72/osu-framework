@@ -22,7 +22,6 @@ namespace osu.Framework.Platform.Android
             if (!clipboard.HasPrimaryClip)
             {
                 return "";
-                
             }
             else
             {
