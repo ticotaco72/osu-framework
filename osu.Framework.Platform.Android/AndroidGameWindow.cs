@@ -9,15 +9,35 @@ using System.Drawing;
 using System.IO;
 using osu.Framework.Configuration;
 using osu.Framework.Input;
+using Android.Views;
+//Done this way to avoid namespace clashes.
+using myAndroidGraphics = Android.Graphics;
+using Android.App;
+using myAndroidContent = Android.Content;
+using Android.Hardware.Display;
 
 namespace osu.Framework.Platform.Android
 {
     public class AndroidGameWindow : GameWindow
     {
-        internal AndroidGameWindow()
-            : base(56, 89)
+        static myAndroidGraphics.Point getBootResolution()
         {
-            //something;
+            DisplayManager displayManager = (DisplayManager)Application.Context.GetSystemService(myAndroidContent.Context.DisplayService);
+            Display display = displayManager.GetDisplay(Display.DefaultDisplay);
+            myAndroidGraphics.Point mysize = new myAndroidGraphics.Point();
+            display.GetRealSize(mysize);
+            return mysize;
+        }
+
+        internal AndroidGameWindow()
+            : base(getBootResolution().X, getBootResolution().Y)
+        {
+            /*
+            DisplayManager displayManager = (DisplayManager)Application.Context.GetSystemService(myAndroidContent.Context.DisplayService);
+            Display display = displayManager.GetDisplay(Display.DefaultDisplay);
+            myAndroidGraphics.Point mysize = new myAndroidGraphics.Point();
+            display.GetRealSize(mysize);
+            */
         }
 
         public override DisplayDevice GetCurrentDisplay() => DisplayDevice.Default;
