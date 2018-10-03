@@ -58,6 +58,7 @@
     <Compile Include="AndroidStorage.cs" />
     <Compile Include="myAndroidGameWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AndroidNativeGameWindow.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Cyotek.Drawing.BitmapFont">
