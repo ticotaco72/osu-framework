@@ -54,6 +54,7 @@
     <Compile Include="AndroidClipboard.cs" />
     <Compile Include="AndroidGameHost.cs" />
     <Compile Include="AndroidGameWindow.cs" />
+    <Compile Include="AndroidGLSurfaceView.cs" />
     <Compile Include="AndroidHost.cs" />
     <Compile Include="AndroidStorage.cs" />
     <Compile Include="myAndroidGameWindow.cs" />
