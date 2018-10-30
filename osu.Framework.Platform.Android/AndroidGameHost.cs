@@ -28,7 +28,7 @@ namespace osu.Framework.Platform.Android
             Window = new AndroidGameWindow();
             Window.WindowStateChanged += (sender, e) =>
             {
-                if (Window.WindowState != osuTK.WindowState.Minimized)
+                if (Window.WindowState != WindowState.Minimized)
                     OnActivated();
                 else
                     OnDeactivated();
