@@ -16,6 +16,8 @@ namespace osu.Framework.Platform.Android
 {
     public class AndroidGLSurfaceView : GLSurfaceView
     {
+
+        private AndroidGLRenderer renderer;
         DisplayMetrics metrics = new DisplayMetrics();
 
         public AndroidGLSurfaceView(Context context, IAttributeSet attrs) :
@@ -32,7 +34,7 @@ namespace osu.Framework.Platform.Android
 
         private void Initialize()
         {
-
+            SetRenderer(renderer);
         }
 
         internal int GetWidth()
