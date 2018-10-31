@@ -3,11 +3,14 @@
 
 using System;
 using System.Diagnostics;
+using osu.Framework.Graphics.Shapes;
 using osu.Framework.Input;
+using osu.Framework.Input.Bindings;
+using osu.Framework.Input.Events;
 using osu.Framework.MathUtils;
+using osu.Framework.Threading;
 using osuTK;
 using osuTK.Graphics;
-using osu.Framework.Graphics.Shapes;
 using osuTK.Input;
 
 namespace osu.Framework.Graphics.Containers
@@ -18,12 +21,13 @@ namespace osu.Framework.Graphics.Containers
         /// Creates a scroll container.
         /// </summary>
         /// <param name="scrollDirection">The direction in which should be scrolled. Can be vertical or horizontal. Default is vertical.</param>
-        public ScrollContainer(Direction scrollDirection = Direction.Vertical) : base(scrollDirection)
+        public ScrollContainer(Direction scrollDirection = Direction.Vertical)
+            : base(scrollDirection)
         {
         }
     }
 
-    public class ScrollContainer<T> : Container<T>, DelayedLoadWrapper.IOnScreenOptimisingContainer
+    public class ScrollContainer<T> : Container<T>, DelayedLoadWrapper.IOnScreenOptimisingContainer, IKeyBindingHandler<PlatformAction>
         where T : Drawable
     {
         /// <summary>
@@ -158,6 +162,8 @@ namespace osu.Framework.Graphics.Containers
 
         protected virtual bool IsDragging { get; private set; }
 
+        public bool IsHandlingKeyboardScrolling => IsHovered || ReceivePositionalInputAt(GetContainingInputManager().CurrentState.Mouse.Position);
+
         /// <summary>
         /// The direction in which scrolling is supported.
         /// </summary>
@@ -236,9 +242,9 @@ namespace osu.Framework.Graphics.Containers
             }
         }
 
-        protected override bool OnDragStart(InputState state)
+        protected override bool OnDragStart(DragStartEvent e)
         {
-            if (IsDragging || !state.Mouse.IsPressed(MouseButton.Left)) return false;
+            if (IsDragging || e.Button != MouseButton.Left) return false;
 
             lastDragTime = Time.Current;
             averageDragDelta = averageDragTime = 0;
@@ -247,9 +253,27 @@ namespace osu.Framework.Graphics.Containers
             return true;
         }
 
-        protected override bool OnMouseDown(InputState state, MouseDownEventArgs args)
+        protected override bool OnKeyDown(KeyDownEvent e)
         {
-            if (IsDragging || args.Button != MouseButton.Left) return false;
+            if (IsHandlingKeyboardScrolling && !IsDragging)
+            {
+                switch (e.Key)
+                {
+                    case Key.PageUp:
+                        ScrollTo(target - displayableContent);
+                        return true;
+                    case Key.PageDown:
+                        ScrollTo(target + displayableContent);
+                        return true;
+                }
+            }
+
+            return base.OnKeyDown(e);
+        }
+
+        protected override bool OnMouseDown(MouseDownEvent e)
+        {
+            if (IsDragging || e.Button != MouseButton.Left) return false;
 
             // Continue from where we currently are scrolled to.
             target = Current;
@@ -269,7 +293,7 @@ namespace osu.Framework.Graphics.Containers
         private double averageDragTime;
         private double averageDragDelta;
 
-        protected override bool OnDrag(InputState state)
+        protected override bool OnDrag(DragEvent e)
         {
             Trace.Assert(IsDragging, "We should never receive OnDrag if we are not dragging.");
 
@@ -278,11 +302,11 @@ namespace osu.Framework.Graphics.Containers
             double decay = Math.Pow(0.95, timeDelta);
 
             averageDragTime = averageDragTime * decay + timeDelta;
-            averageDragDelta = averageDragDelta * decay - state.Mouse.Delta[ScrollDim];
+            averageDragDelta = averageDragDelta * decay - e.Delta[ScrollDim];
 
             lastDragTime = currentTime;
 
-            Vector2 childDelta = ToLocalSpace(state.Mouse.NativeState.Position) - ToLocalSpace(state.Mouse.NativeState.LastPosition);
+            Vector2 childDelta = ToLocalSpace(e.ScreenSpaceMousePosition) - ToLocalSpace(e.ScreenSpaceLastMousePosition);
 
             float scrollOffset = -childDelta[ScrollDim];
             float clampedScrollOffset = Clamp(target + scrollOffset) - Clamp(target);
@@ -297,7 +321,7 @@ namespace osu.Framework.Graphics.Containers
             return true;
         }
 
-        protected override bool OnDragEnd(InputState state)
+        protected override bool OnDragEnd(DragEndEvent e)
         {
             Trace.Assert(IsDragging, "We should never receive OnDragEnd if we are not dragging.");
 
@@ -323,11 +347,11 @@ namespace osu.Framework.Graphics.Containers
             return true;
         }
 
-        protected override bool OnScroll(InputState state)
+        protected override bool OnScroll(ScrollEvent e)
         {
-            bool isPrecise = state.Mouse.HasPreciseScroll;
+            bool isPrecise = e.IsPrecise;
 
-            Vector2 scrollDelta = state.Mouse.ScrollDelta;
+            Vector2 scrollDelta = e.ScrollDelta;
             float scrollDeltaFloat = scrollDelta.Y;
             if (ScrollDirection == Direction.Horizontal && scrollDelta.X != 0)
                 scrollDeltaFloat = scrollDelta.X;
@@ -349,6 +373,17 @@ namespace osu.Framework.Graphics.Containers
         }
 
         private void offset(float value, bool animated, double distanceDecay = float.PositiveInfinity) => scrollTo(target + value, animated, distanceDecay);
+
+        /// <summary>
+        /// Scroll to the start of available content.
+        /// </summary>
+        /// <param name="animated">Whether to animate the movement.</param>
+        /// <param name="allowDuringDrag">Whether we should interrupt a user's active drag.</param>
+        public void ScrollToStart(bool animated = true, bool allowDuringDrag = false)
+        {
+            if (!IsDragging || allowDuringDrag)
+                scrollTo(0, animated, DistanceDecayJump);
+        }
 
         /// <summary>
         /// Scroll to the end of available content.
@@ -537,28 +572,28 @@ namespace osu.Framework.Graphics.Containers
                 this.ResizeTo(size, duration, easing);
             }
 
-            protected override bool OnClick(InputState state) => true;
+            protected override bool OnClick(ClickEvent e) => true;
 
-            protected override bool OnHover(InputState state)
+            protected override bool OnHover(HoverEvent e)
             {
                 this.FadeColour(hoverColour, 100);
                 return true;
             }
 
-            protected override void OnHoverLost(InputState state)
+            protected override void OnHoverLost(HoverLostEvent e)
             {
                 this.FadeColour(defaultColour, 100);
             }
 
-            protected override bool OnDragStart(InputState state)
+            protected override bool OnDragStart(DragStartEvent e)
             {
-                dragOffset = state.Mouse.Position[scrollDim] - Position[scrollDim];
+                dragOffset = e.MousePosition[scrollDim] - Position[scrollDim];
                 return true;
             }
 
-            protected override bool OnMouseDown(InputState state, MouseDownEventArgs args)
+            protected override bool OnMouseDown(MouseDownEvent e)
             {
-                if (args.Button != MouseButton.Left) return false;
+                if (e.Button != MouseButton.Left) return false;
 
                 //note that we are changing the colour of the box here as to not interfere with the hover effect.
                 box.FadeColour(highlightColour, 100);
@@ -568,20 +603,42 @@ namespace osu.Framework.Graphics.Containers
                 return true;
             }
 
-            protected override bool OnMouseUp(InputState state, MouseUpEventArgs args)
+            protected override bool OnMouseUp(MouseUpEvent e)
             {
-                if (args.Button != MouseButton.Left) return false;
+                if (e.Button != MouseButton.Left) return false;
 
                 box.FadeColour(Color4.White, 100);
 
-                return base.OnMouseUp(state, args);
+                return base.OnMouseUp(e);
             }
 
-            protected override bool OnDrag(InputState state)
+            protected override bool OnDrag(DragEvent e)
             {
-                Dragged?.Invoke(state.Mouse.Position[scrollDim] - dragOffset);
+                Dragged?.Invoke(e.MousePosition[scrollDim] - dragOffset);
                 return true;
             }
         }
+
+        public bool OnPressed(PlatformAction action)
+        {
+            if (!IsHandlingKeyboardScrolling)
+                return false;
+
+            switch (action.ActionType)
+            {
+                case PlatformActionType.LineStart:
+                    ScrollToStart();
+                    return true;
+                case PlatformActionType.LineEnd:
+                    ScrollToEnd();
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public bool OnReleased(PlatformAction action) => false;
+
+        ScheduledDelegate DelayedLoadWrapper.IOnScreenOptimisingContainer.ScheduleCheckAction(Action action) => Scheduler.AddDelayed(action, 0, true);
     }
 }

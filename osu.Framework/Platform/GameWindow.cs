@@ -2,6 +2,7 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using osu.Framework.Configuration;
 using osu.Framework.Logging;
@@ -54,6 +55,11 @@ namespace osu.Framework.Platform
         public bool CursorInWindow { get; private set; }
 
         /// <summary>
+        /// Available resolutions for full-screen display.
+        /// </summary>
+        public virtual IEnumerable<DisplayResolution> AvailableResolutions => Enumerable.Empty<DisplayResolution>();
+
+        /// <summary>
         /// Creates a <see cref="GameWindow"/> with a given <see cref="IGameWindow"/> implementation.
         /// </summary>
         protected GameWindow([NotNull] IGameWindow implementation)
@@ -93,7 +99,7 @@ namespace osu.Framework.Platform
                         GL Renderer:                {GL.GetString(StringName.Renderer)}
                         GL Shader Language version: {GL.GetString(StringName.ShadingLanguageVersion)}
                         GL Vendor:                  {GL.GetString(StringName.Vendor)}
-                        GL Extensions:              {GL.GetString(StringName.Extensions)}", LoggingTarget.Runtime, LogLevel.Important);
+                        GL Extensions:              {GL.GetString(StringName.Extensions)}");
 
             Context.MakeCurrent(null);
         }
@@ -166,7 +172,11 @@ namespace osu.Framework.Platform
         /// Gets the <see cref="DisplayDevice"/> that this window is currently on.
         /// </summary>
         /// <returns></returns>
-        public abstract DisplayDevice GetCurrentDisplay();
+        public virtual DisplayDevice CurrentDisplay
+        {
+            get => DisplayDevice.FromRectangle(Bounds) ?? DisplayDevice.Default;
+            set => throw new InvalidOperationException($@"{GetType().Name}.{nameof(CurrentDisplay)} cannot be set.");
+        }
 
         private string getVersionNumberSubstring(string version)
         {
