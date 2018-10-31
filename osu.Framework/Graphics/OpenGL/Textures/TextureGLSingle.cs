@@ -12,7 +12,7 @@ using osu.Framework.Statistics;
 using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.OpenGL.Vertices;
 using osu.Framework.Graphics.Textures;
-using OpenTK;
+using osuTK;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Advanced;
 using SixLabors.ImageSharp.PixelFormats;
@@ -399,7 +399,6 @@ namespace osu.Framework.Graphics.OpenGL.Textures
                 else
                 {
                     initializeLevel(upload.Level, width, height);
-
                     GL.TexSubImage2D(TextureTarget2d.Texture2D, upload.Level, upload.Bounds.X, upload.Bounds.Y, upload.Bounds.Width, upload.Bounds.Height, upload.Format,
                         PixelType.UnsignedByte, dataPointer);
                 }

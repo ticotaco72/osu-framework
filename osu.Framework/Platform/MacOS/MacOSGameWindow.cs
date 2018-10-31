@@ -10,7 +10,7 @@ using System.Reflection;
 using osu.Framework.Configuration;
 using osu.Framework.Logging;
 using osu.Framework.Platform.MacOS.Native;
-using OpenTK;
+using osuTK;
 
 namespace osu.Framework.Platform.MacOS
 {
