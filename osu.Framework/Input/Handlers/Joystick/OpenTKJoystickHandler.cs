@@ -92,7 +92,7 @@ namespace osu.Framework.Input.Handlers.Joystick
             // Find any newly-connected devices
             while (true)
             {
-                if (!OpenTK.Input.Joystick.GetCapabilities(mostSeenDevices).IsConnected)
+                if (!osuTK.Input.Joystick.GetCapabilities(mostSeenDevices).IsConnected)
                     break;
 
                 var newDevice = new JoystickDevice(mostSeenDevices);

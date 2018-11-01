@@ -135,7 +135,7 @@ namespace osu.Framework.Platform.MacOS
             }
 
             // If the cursor should be hidden, but something in the system has made it appear (such as a notification),
-            // invalidate the cursor rects to hide it.  OpenTK has a private function that does this.
+            // invalidate the cursor rects to hide it.  osuTK has a private function that does this.
             if (CursorState.HasFlag(CursorState.Hidden) && Cocoa.CGCursorIsVisible() && !menuBarVisible)
                 methodInvalidateCursorRects.Invoke(nativeWindow, new object[0]);
         }
@@ -200,7 +200,7 @@ namespace osu.Framework.Platform.MacOS
                 methodKeyUp.Invoke(nativeWindow, new object[] { key });
         }
 
-        // FIXME: OpenTK's current window:shouldZoomToFrame: is broken and can't be overridden, so we replace it
+        // FIXME: osuTK's current window:shouldZoomToFrame: is broken and can't be overridden, so we replace it
         private bool windowShouldZoomToFrame(IntPtr self, IntPtr cmd, IntPtr nsWindow, RectangleF toFrame) => true;
 
         protected override void UpdateWindowMode(WindowMode newMode)

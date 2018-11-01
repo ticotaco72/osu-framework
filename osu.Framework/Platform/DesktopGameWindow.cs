@@ -111,7 +111,7 @@ namespace osu.Framework.Platform
 
             if (newResolution == null)
             {
-                // we wanted a new resolution but got nothing, which means OpenTK didn't find this resolution
+                // we wanted a new resolution but got nothing, which means osuTK didn't find this resolution
                 RestoreResolution(display);
             }
             else
