@@ -14,8 +14,9 @@ using osuTK.Input;
 using System.ComponentModel;
 using System.Drawing;
 using JetBrains.Annotations;
+#if !ANDROID
 using Icon = osuTK.Icon;
-
+#endif
 namespace osu.Framework.Platform
 {
     public abstract class GameWindow : IGameWindow
@@ -202,7 +203,9 @@ namespace osu.Framework.Platform
         public void MakeCurrent() => Implementation.MakeCurrent();
         public void SwapBuffers() => Implementation.SwapBuffers();
 
+#if !ANDROID
         Icon INativeWindow.Icon { get => Implementation.Icon; set => Implementation.Icon = value; }
+#endif
         public string Title { get => Implementation.Title; set => Implementation.Title = value; }
         public bool Focused => Implementation.Focused;
         public bool Visible { get => Implementation.Visible; set => Implementation.Visible = value; }

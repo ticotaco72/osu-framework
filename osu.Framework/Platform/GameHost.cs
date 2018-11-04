@@ -387,12 +387,17 @@ namespace osu.Framework.Platform
             {
                 if (GraphicsContext.CurrentContext == null)
                     throw new GraphicsContextMissingException();
-
+#if !ANDROID
                 osuTK.Graphics.OpenGL.GL.ReadPixels(0, 0, image.Width, image.Height,
                     osuTK.Graphics.OpenGL.PixelFormat.Rgba,
                     osuTK.Graphics.OpenGL.PixelType.UnsignedByte,
                     ref MemoryMarshal.GetReference(image.GetPixelSpan()));
-
+#else
+                osuTK.Graphics.ES30.GL.ReadPixels(0, 0, image.Width, image.Height,
+                    osuTK.Graphics.ES30.PixelFormat.Rgba,
+                    osuTK.Graphics.ES30.PixelType.UnsignedByte,
+                    ref MemoryMarshal.GetReference(image.GetPixelSpan()));
+#endif
                 complete = true;
             });
 
@@ -694,7 +699,7 @@ namespace osu.Framework.Platform
 
         public abstract ITextInputSource GetTextInput();
 
-        #region IDisposable Support
+#region IDisposable Support
 
         private bool isDisposed;
 
@@ -738,7 +743,7 @@ namespace osu.Framework.Platform
             GC.SuppressFinalize(this);
         }
 
-        #endregion
+#endregion
 
         /// <summary>
         /// Defines the platform-specific key bindings that will be used by <see cref="PlatformActionContainer"/>.

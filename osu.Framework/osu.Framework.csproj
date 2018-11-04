@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup Label="Project">
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
@@ -51,17 +51,21 @@
     <NativeLibs Include="$(MSBuildThisFileDirectory)*.so" />
     <NativeLibs Include="$(MSBuildThisFileDirectory)*.dylib" />
     <Compile Remove="Android-obj\**" />
+    <Compile Remove="Platform\Android\**" />
     <Compile Remove="Platform\iOS\**" />
     <Compile Remove="Resources\values\**" />
     <EmbeddedResource Remove="Android-obj\**" />
+    <EmbeddedResource Remove="Platform\Android\**" />
     <EmbeddedResource Remove="Platform\iOS\**" />
     <EmbeddedResource Remove="Resources\values\**" />
     <None Remove="Android-obj\**" />
+    <None Remove="Platform\Android\**" />
     <None Remove="Platform\iOS\**" />
     <None Remove="Resources\values\**" />
     <Compile Remove="Resources\Resource.Designer.cs" />
     <EmbeddedResource Remove="Resources\AboutResources.txt" />
     <EmbeddedResource Remove="Resources\Resource.Designer.cs" />
+    <None Remove="osuTK-Android.dll" />
     <None Remove="Resources\AboutResources.txt" />
     <None Include="@(NativeLibs)">
       <Pack>true</Pack>

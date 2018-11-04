@@ -141,9 +141,12 @@ namespace osu.Framework.Input.Handlers.Mouse
                 }
                 else
                 {
-                    Rectangle screenRect = state.Flags.HasFlag(MouseStateFlags.VirtualDesktop)
-                        ? Platform.Windows.Native.Input.GetVirtualScreenRect()
-                        : new Rectangle(0, 0, DisplayDevice.Default.Width, DisplayDevice.Default.Height);
+                    Rectangle screenRect =
+#if !ANDROID
+                        state.Flags.HasFlag(MouseStateFlags.VirtualDesktop)
+                        ? Platform.Windows.Native.Input.GetVirtualScreenRect() :
+#endif
+                        new Rectangle(0, 0, DisplayDevice.Default.Width, DisplayDevice.Default.Height);
 
                     // map to full screen space
                     currentPosition.X = (float)state.X / raw_input_resolution * screenRect.Width + screenRect.X;
