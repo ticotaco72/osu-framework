@@ -5,6 +5,7 @@ using System.Text;
 using osu.Framework.Platform;
 using osuTK;
 using osuTK.Graphics;
+using osuTK.Platform.Android;
 using System.Drawing;
 using System.IO;
 using osu.Framework.Configuration;
@@ -38,6 +39,11 @@ namespace osu.Framework.Platform.Android
             myAndroidGraphics.Point mysize = new myAndroidGraphics.Point();
             display.GetRealSize(mysize);
             
+        }
+        internal AndroidGameWindow(AndroidGameView gameView)
+            : base(new AndroidPlatformGameWindow(gameView))
+        {
+
         }
 
         public override DisplayDevice CurrentDisplay => DisplayDevice.Default;

@@ -10,29 +10,47 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using osu.Framework.Input;
+using osu.Framework.Input.Handlers;
 using osu.Framework.Platform;
 using osuTK;
+using osuTK.Platform.Android;
 
 namespace osu.Framework.Platform.Android
 {
-    public class AndroidGameHost : DesktopGameHost
+    public class AndroidGameHost : GameHost
     {
-        protected override Storage GetStorage(string baseName) => new AndroidStorage(baseName, this);
+        private readonly AndroidGameView gameView;
 
-        public override Clipboard GetClipboard() => new AndroidClipboard();
-
-        internal AndroidGameHost(string gameName, bool bindIPC = false)
-            : base(gameName, bindIPC)
+        public AndroidGameHost(AndroidGameView gameView)
         {
-            //var window = new myAndroidGameWindow();
-            Window = new AndroidGameWindow();
-            Window.WindowStateChanged += (sender, e) =>
-            {
-                if (Window.WindowState != WindowState.Minimized)
-                    OnActivated();
-                else
-                    OnDeactivated();
-            };
+            this.gameView = gameView;
+
+            Window = new AndroidGameWindow(gameView);
+        }
+        public override ITextInputSource GetTextInput()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void OpenFileExternally(string filename)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void OpenUrlExternally(string url)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override IEnumerable<InputHandler> CreateAvailableInputHandlers()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override Storage GetStorage(string baseName)
+        {
+            throw new NotImplementedException();
         }
     }
 }

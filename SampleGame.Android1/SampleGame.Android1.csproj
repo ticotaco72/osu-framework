@@ -33,9 +33,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <AndroidUseSharedRuntime>true</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
     <AotAssemblies>false</AotAssemblies>
     <EnableLLVM>false</EnableLLVM>
     <BundleAssemblies>false</BundleAssemblies>
@@ -106,13 +106,9 @@
     <PackageReference Include="Xamarin.Android.Support.Design" Version="27.0.2.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\osu.Framework.Platform.Android\osu.Framework.Platform.Android.csproj">
-      <Project>{77e7c43f-14e2-44f0-a160-15f6a9c9e585}</Project>
-      <Name>osu.Framework.Platform.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\osu.Framework\osu.Framework.csproj">
-      <Project>{c76bf5b3-985e-4d39-95fe-97c9c879b83a}</Project>
-      <Name>osu.Framework</Name>
+    <ProjectReference Include="..\osu.Framework\osu.Framework.Android.csproj">
+      <Project>{15df1bfc-a07c-4d8e-8f4f-5aea2487f658}</Project>
+      <Name>osu.Framework.Android</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
