@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using osuTK;
 using osuTK.Input;
 using osuTK.Platform;
@@ -31,30 +27,30 @@ namespace osu.Framework.Platform.Android
             gameView.VisibleChanged += (o, e) => VisibleChanged?.Invoke(o, e);
             gameView.WindowStateChanged += (o, e) => WindowStateChanged?.Invoke(o, e);
         }
-        public string Title { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string Title { get => gameView.Title; set => gameView.Title = value; }
 
-        public bool Focused => throw new NotImplementedException();
+        public bool Focused => gameView.Focused;
 
-        public bool Visible { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool Visible { get => gameView.Visible; set { } }
 
-        public bool Exists => throw new NotImplementedException();
+        public bool Exists => true;
 
-        public IWindowInfo WindowInfo => throw new NotImplementedException();
+        public IWindowInfo WindowInfo => gameView.WindowInfo;
 
-        public WindowState WindowState { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public WindowBorder WindowBorder { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Rectangle Bounds { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Point Location { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Size Size { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int X { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int Y { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int Width { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int Height { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Rectangle ClientRectangle { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Size ClientSize { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public MouseCursor Cursor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool CursorVisible { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool CursorGrabbed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public WindowState WindowState { get =>WindowState.Fullscreen; set { } }
+        public WindowBorder WindowBorder { get => WindowBorder.Hidden; set { } }
+        public Rectangle Bounds { get => new Rectangle(0, 0, Width, Height); set { } }
+        public Point Location { get => Point.Empty; set { } }
+        public Size Size { get => new Size((int)(gameView.Size.Width * gameView.ScaleX), (int)(gameView.Height * gameView.ScaleY)); set => throw new NotImplementedException(); }
+        public int X { get => 0; set { } }
+        public int Y { get => 0; set { } }
+        public int Width { get => Size.Width; set { } }
+        public int Height { get => Size.Height; set { } }
+        public Rectangle ClientRectangle { get => new Rectangle(0, 0, Width, Height); set { } }
+        public Size ClientSize { get => Size; set { } }
+        public MouseCursor Cursor { get => MouseCursor.Default; set { } }
+        public bool CursorVisible { get => false; set { } }
+        public bool CursorGrabbed { get => true; set { } }
 
         public event EventHandler<EventArgs> Load;
         public event EventHandler<EventArgs> Unload;
@@ -84,47 +80,47 @@ namespace osu.Framework.Platform.Android
 
         public void Close()
         {
-            throw new NotImplementedException();
+            gameView.Close();
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            gameView.Dispose();
         }
 
         public void MakeCurrent()
         {
-            throw new NotImplementedException();
+            gameView.MakeCurrent();
         }
 
         public Point PointToClient(Point point)
         {
-            throw new NotImplementedException();
+            return point;
         }
 
         public Point PointToScreen(Point point)
         {
-            throw new NotImplementedException();
+            return point;
         }
 
         public void ProcessEvents()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void Run()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void Run(double updateRate)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void SwapBuffers()
         {
-            throw new NotImplementedException();
+            gameView.SwapBuffers();
         }
     }
 }

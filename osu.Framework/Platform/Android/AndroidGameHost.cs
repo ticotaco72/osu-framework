@@ -50,7 +50,7 @@ namespace osu.Framework.Platform.Android
 
         protected override Storage GetStorage(string baseName)
         {
-            throw new NotImplementedException();
+            return new AndroidStorage(baseName, this);
         }
     }
 }
