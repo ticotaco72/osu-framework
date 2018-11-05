@@ -20,9 +20,9 @@ namespace osu.Framework.Platform.Android
 {
     public class AndroidGameHost : GameHost
     {
-        private readonly AndroidGameView gameView;
+        private readonly AndroidPlatformGameView gameView;
 
-        public AndroidGameHost(AndroidGameView gameView)
+        public AndroidGameHost(AndroidPlatformGameView gameView)
         {
             this.gameView = gameView;
 

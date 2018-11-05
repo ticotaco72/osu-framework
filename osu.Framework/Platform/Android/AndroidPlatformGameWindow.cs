@@ -10,9 +10,9 @@ namespace osu.Framework.Platform.Android
 {
     public class AndroidPlatformGameWindow : IGameWindow
     {
-        private readonly AndroidGameView gameView;
+        private readonly AndroidPlatformGameView gameView;
 
-        public AndroidPlatformGameWindow(AndroidGameView gameView)
+        public AndroidPlatformGameWindow(AndroidPlatformGameView gameView)
         {
             this.gameView = gameView;
 

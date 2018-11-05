@@ -14,7 +14,7 @@ namespace SampleGame
     [Activity(MainLauncher = true)]
     public class MainActivity : Activity
     {
-        private AndroidGameView gameView;
+        private AndroidPlatformGameView gameView;
 
         private AndroidGameHost host;
         protected override void OnCreate(Bundle savedInstanceState)
@@ -23,7 +23,7 @@ namespace SampleGame
         }
         protected override void OnStart()
         {
-            gameView = new AndroidGameView(BaseContext.ApplicationContext);
+            gameView = new AndroidPlatformGameView(BaseContext.ApplicationContext);
             base.OnStart();
             using (Game game = new SampleGame())
             using (host = new AndroidGameHost(gameView))

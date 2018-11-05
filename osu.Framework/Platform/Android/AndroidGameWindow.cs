@@ -40,7 +40,7 @@ namespace osu.Framework.Platform.Android
             display.GetRealSize(mysize);
             
         }
-        internal AndroidGameWindow(AndroidGameView gameView)
+        internal AndroidGameWindow(AndroidPlatformGameView gameView)
             : base(new AndroidPlatformGameWindow(gameView))
         {
 
