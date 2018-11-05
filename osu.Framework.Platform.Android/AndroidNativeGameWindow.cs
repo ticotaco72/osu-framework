@@ -141,6 +141,6 @@ namespace osu.Framework.Platform.Android
         public MouseCursor Cursor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public bool CursorVisible { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public bool CursorGrabbed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        osuTK.Icon INativeWindow.Icon { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        //osuTK.Icon INativeWindow.Icon { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }

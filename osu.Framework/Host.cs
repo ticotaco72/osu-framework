@@ -2,10 +2,8 @@
 // Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
 
 using osu.Framework.Platform;
-#if ANDROID
-using osu.Framework.Platform.Android;
-#else
 using osu.Framework.Platform.Linux;
+#if !ANDROID
 using osu.Framework.Platform.MacOS;
 using osu.Framework.Platform.Windows;
 #endif
@@ -33,11 +31,7 @@ namespace osu.Framework
                     return new WindowsGameHost(gameName, bindIPC, toolkitOptions);
 #endif
                 case RuntimeInfo.Platform.Linux:
-#if !ANDROID
                     return new LinuxGameHost(gameName, bindIPC, toolkitOptions);
-#else
-                    return new AndroidGameHost(gameName, bindIPC);
-#endif
 
                 default:
                     throw new InvalidOperationException($"Could not find a suitable host for the selected operating system ({Enum.GetName(typeof(RuntimeInfo.Platform), RuntimeInfo.OS)}).");
