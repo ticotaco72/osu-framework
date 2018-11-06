@@ -2,6 +2,7 @@
 <Project>
   <PropertyGroup Label="C#">
     <LangVersion>7</LangVersion>
+    <MSBuildProjectExtensionsPath>obj\$(MSBuildProjectName)\</MSBuildProjectExtensionsPath>
   </PropertyGroup>
   <ItemGroup Label="License">
     <None Include="$(MSBuildThisFileDirectory)osu-framework.licenseheader">
