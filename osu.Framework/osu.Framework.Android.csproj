@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
-    <TargetFrameworks>monoandroid81</TargetFrameworks>
+    <TargetFramework>monoandroid81</TargetFramework>
     <RootNamespace>osu.Framework</RootNamespace>
     <PackageId>ppy.osu.Framework.Android</PackageId>
     <Authors>ppy Pty Ltd</Authors>

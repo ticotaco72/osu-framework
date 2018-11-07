@@ -8,7 +8,7 @@ using osuTK.Graphics;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Allocation;
 
-namespace SampleGame
+namespace SampleGame.Android1
 {
     internal class SampleGame : Game
     {

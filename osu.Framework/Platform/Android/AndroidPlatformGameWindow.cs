@@ -26,6 +26,7 @@ namespace osu.Framework.Platform.Android
             gameView.TitleChanged += (o, e) => TitleChanged?.Invoke(o, e);
             gameView.VisibleChanged += (o, e) => VisibleChanged?.Invoke(o, e);
             gameView.WindowStateChanged += (o, e) => WindowStateChanged?.Invoke(o, e);
+
         }
         public string Title { get => gameView.Title; set => gameView.Title = value; }
 
@@ -41,7 +42,7 @@ namespace osu.Framework.Platform.Android
         public WindowBorder WindowBorder { get => WindowBorder.Hidden; set { } }
         public Rectangle Bounds { get => new Rectangle(0, 0, Width, Height); set { } }
         public Point Location { get => Point.Empty; set { } }
-        public Size Size { get => new Size((int)(gameView.Size.Width * gameView.ScaleX), (int)(gameView.Height * gameView.ScaleY)); set => throw new NotImplementedException(); }
+        public Size Size { get => new Size((int)(gameView.Size.Width * gameView.ScaleX), (int)(gameView.Height * gameView.ScaleY)); set { } }
         public int X { get => 0; set { } }
         public int Y { get => 0; set { } }
         public int Width { get => Size.Width; set { } }
@@ -105,17 +106,17 @@ namespace osu.Framework.Platform.Android
 
         public void ProcessEvents()
         {
-            //throw new NotImplementedException();
+            gameView.ProcessEvents();
         }
 
         public void Run()
         {
-            //throw new NotImplementedException();
+            gameView.Run();
         }
 
         public void Run(double updateRate)
         {
-            //throw new NotImplementedException();
+            gameView.Run(updateRate);
         }
 
         public void SwapBuffers()

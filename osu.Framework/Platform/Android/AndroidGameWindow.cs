@@ -21,6 +21,12 @@ namespace osu.Framework.Platform.Android
 {
     public class AndroidGameWindow : GameWindow
     {
+        public override DisplayDevice CurrentDisplay => DisplayDevice.Default;
+
+        protected override IGraphicsContext Context => Implementation.Context;
+
+        protected new osuTK.GameWindow Implementation => (osuTK.GameWindow)base.Implementation;
+
         static myAndroidGraphics.Point getBootResolution()
         {
             DisplayManager displayManager = (DisplayManager)Application.Context.GetSystemService(myAndroidContent.Context.DisplayService);
@@ -43,14 +49,8 @@ namespace osu.Framework.Platform.Android
         internal AndroidGameWindow(AndroidPlatformGameView gameView)
             : base(new AndroidPlatformGameWindow(gameView))
         {
-
+            
         }
-
-        public override DisplayDevice CurrentDisplay => DisplayDevice.Default;
-
-        protected new osuTK.GameWindow Implementation => (osuTK.GameWindow)base.Implementation;
-
-        protected override IGraphicsContext Context => Implementation.Context;
 
         private void onExit()
         {
