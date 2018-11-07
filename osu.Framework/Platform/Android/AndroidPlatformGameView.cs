@@ -15,6 +15,7 @@ namespace osu.Framework.Platform.Android
     public class AndroidPlatformGameView : AndroidGameView
     {
         int viewportHeight, viewportWidth;
+        int program;
 
         public AndroidPlatformGameView(Context context)
             : base(context)
@@ -33,14 +34,14 @@ namespace osu.Framework.Platform.Android
         }
         void Init()
         {
-
+            ContextRenderingApi = GLVersion.ES2;
+            //GraphicsContext = new GraphicsContext(GraphicsMode.Default, this);
         }
         protected override void CreateFrameBuffer()
         {
-            ContextRenderingApi = GLVersion.ES2;
             try
             {
-                GraphicsMode = new AndroidGraphicsMode(0, 0, 0, 0, 0, false);
+                //GraphicsMode = new AndroidGraphicsMode(0, 0, 0, 0, 0, false);
                 base.CreateFrameBuffer();
                 Log.Verbose("AndroidPlatformGameView","Successfully loaded");
                 return;
@@ -58,10 +59,11 @@ namespace osu.Framework.Platform.Android
             viewportHeight = Height;
             viewportWidth = Width;
 
-            RenderFrame += delegate
+            program = GL.CreateProgram();
+            if (program == 0)
             {
-                RenderView();
-            };
+
+            }
 
             Run(30);
         }
@@ -74,11 +76,10 @@ namespace osu.Framework.Platform.Android
 
             MakeCurrent();
         }
-        void RenderView()
+        /*public override void MakeCurrent()
         {
-            GL.Viewport(0, 0, viewportWidth, viewportHeight);
-            SwapBuffers();
-        }
+
+        }*/
  
     }
 }

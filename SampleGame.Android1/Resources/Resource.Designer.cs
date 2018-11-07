@@ -3935,9 +3935,6 @@ namespace SampleGame.Android1
 			// aapt resource value: 0x7f080038
 			public const int always = 2131230776;
 			
-			// aapt resource value: 0x7f08008b
-			public const int androidPlatformGameView1 = 2131230859;
-			
 			// aapt resource value: 0x7f080056
 			public const int async = 2131230806;
 			
@@ -4177,6 +4174,9 @@ namespace SampleGame.Android1
 			
 			// aapt resource value: 0x7f0800a4
 			public const int right_side = 2131230884;
+			
+			// aapt resource value: 0x7f08008b
+			public const int sampleGameView1 = 2131230859;
 			
 			// aapt resource value: 0x7f08000c
 			public const int save_image_matrix = 2131230732;
