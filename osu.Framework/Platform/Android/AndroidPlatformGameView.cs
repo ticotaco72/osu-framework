@@ -3,7 +3,7 @@ using Android.Runtime;
 using Android.Util;
 
 using osuTK.Graphics;
-using osuTK.Graphics.ES30;
+using osuTK.Graphics.ES20;
 using osuTK.Platform;
 using osuTK.Platform.Android;
 
@@ -15,8 +15,6 @@ namespace osu.Framework.Platform.Android
     public class AndroidPlatformGameView : AndroidGameView
     {
         int viewportHeight, viewportWidth;
-        int program;
-        private float[] vertices;
 
         public AndroidPlatformGameView(Context context)
             : base(context)
@@ -35,11 +33,11 @@ namespace osu.Framework.Platform.Android
         }
         void Init()
         {
-            
+
         }
         protected override void CreateFrameBuffer()
         {
-            ContextRenderingApi = GLVersion.ES3;
+            ContextRenderingApi = GLVersion.ES2;
             try
             {
                 GraphicsMode = new AndroidGraphicsMode(0, 0, 0, 0, 0, false);

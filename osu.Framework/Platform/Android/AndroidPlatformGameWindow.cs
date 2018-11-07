@@ -91,7 +91,14 @@ namespace osu.Framework.Platform.Android
 
         public void MakeCurrent()
         {
-            gameView.MakeCurrent();
+            try
+            {
+                gameView.MakeCurrent();
+            } catch (Exception e)
+            {
+                return;
+            }
+            
         }
 
         public Point PointToClient(Point point)
