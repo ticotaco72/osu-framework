@@ -67,13 +67,13 @@ namespace SampleGame.Android1
             //GL.BindAttribLocation(program, 0, "vPosition");
             GL.LinkProgram(program);
 
-            int linked = 0;
+            /*int linked = 0;
             GL.GetProgram(program, All.LinkStatus, out linked);
             if (linked == 0)
             {
                 GL.DeleteProgram(program);
                 throw new InvalidOperationException("Unable to link program");
-            }
+            }*/
             RenderGame();
         }
         protected override void OnResize(EventArgs e)

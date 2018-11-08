@@ -2,18 +2,14 @@
 using Android.OS;
 using Android.Support.V7.App;
 using System;
-using osu.Framework.Platform;
-using osu.Framework;
-using osu.Framework.Platform.Android;
 using osuTK.Platform.Android;
 using Android.Runtime;
 using Android.Widget;
 using AndroidResource = SampleGame.Android1.Resource;
-using Android.Opengl;
 
 namespace SampleGame.Android1
 {
-    [Activity(MainLauncher = true)]
+    [Activity(Label = "@string/app_name", Theme = "@style/Theme.Design.NoActionBar", MainLauncher = true)]
     public class MainActivity : Activity
     {
 

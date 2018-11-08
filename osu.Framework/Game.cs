@@ -100,8 +100,11 @@ namespace osu.Framework
         private void load(FrameworkConfigManager config)
         {
             Resources = new ResourceStore<byte[]>();
+#if !__ANDROID__
             Resources.AddStore(new NamespacedResourceStore<byte[]>(new DllResourceStore(@"osu.Framework.dll"), @"Resources"));
-
+#else
+            Resources.AddStore(new NamespacedResourceStore<byte[]>(new DllResourceStore(@"osu.Framework.Android.dll"), @"Resources"));
+#endif
             Textures = new TextureStore(new TextureLoaderStore(new NamespacedResourceStore<byte[]>(Resources, @"Textures")));
             Textures.AddStore(new TextureLoaderStore(new OnlineStore()));
             dependencies.Cache(Textures);
