@@ -12,7 +12,7 @@ using Android.Views;
 using Android.Widget;
 using osu.Framework;
 using osu.Framework.Platform.Android;
-using osuTK.Graphics.ES20;
+using osuTK.Graphics.ES30;
 using osuTK.Platform.Android;
 
 namespace SampleGame.Android1
@@ -34,7 +34,7 @@ namespace SampleGame.Android1
         }
         void Init()
         {
-            ContextRenderingApi = osuTK.Graphics.GLVersion.ES2;
+            ContextRenderingApi = osuTK.Graphics.GLVersion.ES3;
         }
         protected override void CreateFrameBuffer()
         {

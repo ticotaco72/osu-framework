@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using osuTK;
 using osuTK.Graphics;
-using osuTK.Graphics.ES20;
+using osuTK.Graphics.ES30;
 using osuTK.Input;
 using osu.Framework.Allocation;
 using osu.Framework.Configuration;
@@ -387,15 +387,15 @@ namespace osu.Framework.Platform
             {
                 if (GraphicsContext.CurrentContext == null)
                     throw new GraphicsContextMissingException();
-#if !ANDROID
+#if !__ANDROID__
                 osuTK.Graphics.OpenGL.GL.ReadPixels(0, 0, image.Width, image.Height,
                     osuTK.Graphics.OpenGL.PixelFormat.Rgba,
                     osuTK.Graphics.OpenGL.PixelType.UnsignedByte,
                     ref MemoryMarshal.GetReference(image.GetPixelSpan()));
 #else
-                osuTK.Graphics.ES20.GL.ReadPixels(0, 0, image.Width, image.Height,
-                    osuTK.Graphics.ES20.PixelFormat.Rgba,
-                    osuTK.Graphics.ES20.PixelType.UnsignedByte,
+                osuTK.Graphics.ES30.GL.ReadPixels(0, 0, image.Width, image.Height,
+                    osuTK.Graphics.ES30.PixelFormat.Rgba,
+                    osuTK.Graphics.ES30.PixelType.UnsignedByte,
                     ref MemoryMarshal.GetReference(image.GetPixelSpan()));
 #endif
                 complete = true;
