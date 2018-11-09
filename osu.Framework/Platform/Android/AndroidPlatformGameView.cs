@@ -1,42 +1,41 @@
-﻿using Android.Content;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+using Android.App;
+using Android.Content;
+using Android.OS;
 using Android.Runtime;
 using Android.Util;
-
-using osuTK.Graphics;
-using osuTK.Graphics.ES20;
-using osuTK.Platform;
+using Android.Views;
+using Android.Widget;
+using osu.Framework;
+using osu.Framework.Platform.Android;
+using osuTK.Graphics.ES30;
 using osuTK.Platform.Android;
-
-using System;
-using System.Text;
 
 namespace osu.Framework.Platform.Android
 {
     [Register("AndroidPlatformGameView")]
     public class AndroidPlatformGameView : AndroidGameView
     {
-        int viewportHeight, viewportWidth;
+        int viewportWidth, viewportHeight;
         int program;
 
-        public AndroidPlatformGameView(Context context)
-            : base(context)
+        AndroidGameHost host;
+
+        public SampleGameView(Context context, IAttributeSet attrs) : base(context, attrs)
         {
             Init();
         }
-        public AndroidPlatformGameView(Context context, IAttributeSet attrs)
-            : base(context, attrs)
-        {
-            Init();
-        }
-        public AndroidPlatformGameView(IntPtr handle, JniHandleOwnership transfer)
-            : base(handle, transfer)
+        public SampleGameView(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
         {
             Init();
         }
         void Init()
         {
-            ContextRenderingApi = GLVersion.ES2;
-            //GraphicsContext = new GraphicsContext(GraphicsMode.Default, this);
+            ContextRenderingApi = osuTK.Graphics.GLVersion.ES3;
         }
         protected override void CreateFrameBuffer()
         {
@@ -44,11 +43,12 @@ namespace osu.Framework.Platform.Android
             {
                 //GraphicsMode = new AndroidGraphicsMode(0, 0, 0, 0, 0, false);
                 base.CreateFrameBuffer();
-                Log.Verbose("AndroidPlatformGameView","Successfully loaded");
+                Log.Verbose("SampleGameView", "Successfully loaded");
                 return;
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
-                Log.Verbose("AndroidPlatformGameView", "{0}", e);
+                Log.Verbose("SampleGameView", "{0}", e);
             }
             throw new Exception("Can't load egl, aborting");
         }
@@ -63,10 +63,19 @@ namespace osu.Framework.Platform.Android
             program = GL.CreateProgram();
             if (program == 0)
             {
-
+                throw new InvalidOperationException("Program could not be created");
             }
+            //GL.BindAttribLocation(program, 0, "vPosition");
+            GL.LinkProgram(program);
 
-            Run(30);
+            /*int linked = 0;
+            GL.GetProgram(program, All.LinkStatus, out linked);
+            if (linked == 0)
+            {
+                GL.DeleteProgram(program);
+                throw new InvalidOperationException("Unable to link program");
+            }*/
+            RenderGame();
         }
         protected override void OnResize(EventArgs e)
         {
@@ -77,10 +86,15 @@ namespace osu.Framework.Platform.Android
 
             MakeCurrent();
         }
+        void RenderGame()
+        {
+            host = new AndroidGameHost(this);
+            host.Run(new SampleGame());
+        }
         /*public override void MakeCurrent()
         {
 
         }*/
- 
+
     }
 }
