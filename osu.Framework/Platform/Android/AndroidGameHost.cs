@@ -12,7 +12,8 @@ using Android.Views;
 using Android.Widget;
 using osu.Framework.Input;
 using osu.Framework.Input.Handlers;
-using osu.Framework.Platform;
+using osu.Framework.Logging;
+using osu.Framework.Platform.Android.Input;
 using osuTK;
 using osuTK.Platform.Android;
 
@@ -20,13 +21,22 @@ namespace osu.Framework.Platform.Android
 {
     public class AndroidGameHost : GameHost
     {
-        //private readonly AndroidPlatformGameView gameView;
+        private readonly AndroidGameView gameView;
 
         public AndroidGameHost(AndroidGameView gameView)
         {
-            //this.gameView = gameView;
+            this.gameView = gameView;
 
             Window = new AndroidGameWindow(gameView);
+            Window.WindowStateChanged += (sender, e) =>
+            {
+                if (Window.WindowState != WindowState.Minimized)
+                    OnActivated();
+                else
+                    OnDeactivated();
+            };
+
+            Logger.Storage = Storage.GetStorageForDirectory("logs");
         }
         public override ITextInputSource GetTextInput()
         {
@@ -45,12 +55,16 @@ namespace osu.Framework.Platform.Android
 
         protected override IEnumerable<InputHandler> CreateAvailableInputHandlers()
         {
-            throw new NotImplementedException();
+            yield return new AndroidTouchHandler(gameView);
         }
 
         protected override Storage GetStorage(string baseName)
         {
             return new AndroidStorage(baseName, this);
+        }
+        public override Clipboard GetClipboard()
+        {
+            return new AndroidClipboard();
         }
     }
 }

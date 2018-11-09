@@ -9,13 +9,13 @@ using osuTK.Platform.Android;
 using System.Drawing;
 using System.IO;
 using osu.Framework.Configuration;
-using osu.Framework.Input;
 using Android.Views;
+using System.Reflection;
 //Done this way to avoid namespace clashes.
-using myAndroidGraphics = Android.Graphics;
+/*using myAndroidGraphics = Android.Graphics;
 using Android.App;
 using myAndroidContent = Android.Content;
-using Android.Hardware.Display;
+using Android.Hardware.Display;*/
 
 namespace osu.Framework.Platform.Android
 {
@@ -27,29 +27,12 @@ namespace osu.Framework.Platform.Android
 
         protected new osuTK.GameWindow Implementation => (osuTK.GameWindow)base.Implementation;
 
-        static myAndroidGraphics.Point getBootResolution()
-        {
-            DisplayManager displayManager = (DisplayManager)Application.Context.GetSystemService(myAndroidContent.Context.DisplayService);
-            Display display = displayManager.GetDisplay(Display.DefaultDisplay);
-            myAndroidGraphics.Point mysize = new myAndroidGraphics.Point();
-            display.GetRealSize(mysize);
-            return mysize;
-        }
-
-        internal AndroidGameWindow()
-            : base(getBootResolution().X, getBootResolution().Y)
-        {
-            
-            DisplayManager displayManager = (DisplayManager)Application.Context.GetSystemService(myAndroidContent.Context.DisplayService);
-            Display display = displayManager.GetDisplay(Display.DefaultDisplay);
-            myAndroidGraphics.Point mysize = new myAndroidGraphics.Point();
-            display.GetRealSize(mysize);
-            
-        }
-        internal AndroidGameWindow(AndroidGameView gameView)
+        public override IEnumerable<DisplayResolution> AvailableResolutions => CurrentDisplay.AvailableResolutions;
+  
+        public AndroidGameWindow(AndroidGameView gameView)
             : base(new AndroidPlatformGameWindow(gameView))
         {
-
+            Load += OnLoad;
         }
 
         private void onExit()
@@ -59,7 +42,15 @@ namespace osu.Framework.Platform.Android
 
         public override void SetupWindow(FrameworkConfigManager config)
         {
-            onExit();
+            //onExit();
+        }
+        protected void OnLoad(object sender, EventArgs e)
+        {
+            var implementationField = typeof(NativeWindow).GetRuntimeFields().Single(x => x.Name == "implementation");
+
+            var windowImpl = implementationField.GetValue(Implementation);
+
+            //isSdl = windowImpl.GetType().Name == "Sdl2NativeWindow";
         }
     }
 }

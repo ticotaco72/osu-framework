@@ -10,7 +10,7 @@ namespace osu.Framework.Platform.Android
 {
     public class AndroidPlatformGameWindow : IGameWindow
     {
-        private readonly AndroidGameView gameView;
+        private AndroidGameView gameView;
 
         public AndroidPlatformGameWindow(AndroidGameView gameView)
         {
@@ -26,9 +26,9 @@ namespace osu.Framework.Platform.Android
             gameView.TitleChanged += (o, e) => TitleChanged?.Invoke(o, e);
             gameView.VisibleChanged += (o, e) => VisibleChanged?.Invoke(o, e);
             gameView.WindowStateChanged += (o, e) => WindowStateChanged?.Invoke(o, e);
-
         }
-        public string Title { get => gameView.Title; set => gameView.Title = value; }
+        // We cannot have titles.
+        public string Title { get => gameView.Title; set { } }
 
         public bool Focused => gameView.Focused;
 
@@ -91,14 +91,7 @@ namespace osu.Framework.Platform.Android
 
         public void MakeCurrent()
         {
-            try
-            {
-                gameView.MakeCurrent();
-            } catch (Exception e)
-            {
-                return;
-            }
-            
+            gameView.MakeCurrent();
         }
 
         public Point PointToClient(Point point)

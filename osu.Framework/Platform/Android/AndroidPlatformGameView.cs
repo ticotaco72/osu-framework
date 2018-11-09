@@ -12,6 +12,7 @@ using System.Text;
 
 namespace osu.Framework.Platform.Android
 {
+    [Register("AndroidPlatformGameView")]
     public class AndroidPlatformGameView : AndroidGameView
     {
         int viewportHeight, viewportWidth;
