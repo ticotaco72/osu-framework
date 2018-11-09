@@ -5,6 +5,7 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Opengl;
 using Android.OS;
 using Android.Runtime;
 using Android.Util;
@@ -15,6 +16,10 @@ namespace osu.Framework.Platform.Android
 {
     public class AndroidGLSurfaceView : GLSurfaceView
     {
+
+        private AndroidGLRenderer renderer;
+        DisplayMetrics metrics = new DisplayMetrics();
+
         public AndroidGLSurfaceView(Context context, IAttributeSet attrs) :
             base(context, attrs)
         {
@@ -29,6 +34,19 @@ namespace osu.Framework.Platform.Android
 
         private void Initialize()
         {
+            SetRenderer(renderer);
+        }
+
+        internal int GetWidth()
+        {
+            return metrics.WidthPixels;
+            //throw new NotImplementedException();
+        }
+
+        internal int GetHeight()
+        {
+            return metrics.HeightPixels;
+            //throw new NotImplementedException();
         }
         //ADD RENDERER, CONTEXT AND OTHER NEEDED THINGS
     }

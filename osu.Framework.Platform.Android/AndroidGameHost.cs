@@ -24,11 +24,11 @@ namespace osu.Framework.Platform.Android
         internal AndroidGameHost(string gameName, bool bindIPC = false)
             : base(gameName, bindIPC)
         {
-            var window = new myAndroidGameWindow();
+            //var window = new myAndroidGameWindow();
             Window = new AndroidGameWindow();
             Window.WindowStateChanged += (sender, e) =>
             {
-                if (Window.WindowState != osuTK.WindowState.Minimized)
+                if (Window.WindowState != WindowState.Minimized)
                     OnActivated();
                 else
                     OnDeactivated();

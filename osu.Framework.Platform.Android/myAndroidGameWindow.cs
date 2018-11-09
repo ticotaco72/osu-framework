@@ -17,7 +17,7 @@ namespace osu.Framework.Platform.Android
     {
         internal myAndroidGameWindow()
         {
-            DisplayDevice mydisplay = DisplayDevice.GetDisplay(0);
+            DisplayDevice mydisplay = DisplayDevice.GetDisplay(DisplayIndex.Default);
             var window = new osuTK.GameWindow();
         }
     }

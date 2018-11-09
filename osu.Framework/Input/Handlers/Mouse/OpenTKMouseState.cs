@@ -6,15 +6,13 @@ using osuTK.Input;
 
 namespace osu.Framework.Input.Handlers.Mouse
 {
-    internal abstract class osuTKMouseState : MouseState
+    internal abstract class osuTKMouseState : States.MouseState
     {
         public readonly bool WasActive;
+        public readonly bool HasPreciseScroll;
+        public MouseState RawState;
 
-        public osuTK.Input.MouseState RawState;
-
-        public override Vector2 ScrollDelta => WasActive ? base.ScrollDelta : Vector2.Zero;
-
-        protected osuTKMouseState(osuTK.Input.MouseState tkState, bool active, Vector2? mappedPosition)
+        protected osuTKMouseState(MouseState tkState, bool active, Vector2? mappedPosition)
         {
             WasActive = active;
 

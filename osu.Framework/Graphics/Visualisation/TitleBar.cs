@@ -4,7 +4,7 @@
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
-using osu.Framework.Input;
+using osu.Framework.Input.Events;
 using osuTK;
 using osuTK.Graphics;
 
@@ -38,14 +38,14 @@ namespace osu.Framework.Graphics.Visualisation
             };
         }
 
-        protected override bool OnDragStart(InputState state) => true;
+        protected override bool OnDragStart(DragStartEvent e) => true;
 
-        protected override bool OnDrag(InputState state)
+        protected override bool OnDrag(DragEvent e)
         {
-            movableTarget.Position += state.Mouse.Delta;
-            return base.OnDrag(state);
+            movableTarget.Position += e.Delta;
+            return base.OnDrag(e);
         }
 
-        protected override bool OnMouseDown(InputState state, MouseDownEventArgs args) => true;
+        protected override bool OnMouseDown(MouseDownEvent e) => true;
     }
 }

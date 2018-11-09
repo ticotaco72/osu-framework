@@ -118,7 +118,7 @@ namespace osu.Framework.Platform.Android
             }
         }
 
-        public Icon Icon { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public osuTK.Icon Icon { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public string Title { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public bool Focused => throw new NotImplementedException();
@@ -134,12 +134,13 @@ namespace osu.Framework.Platform.Android
         public Rectangle Bounds { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public Point Location { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public System.Drawing.Size Size { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int X { get => base.GetX(); set => throw new NotImplementedException(); }
-        public int Y { get => base.GetY(); set => throw new NotImplementedException(); }
+        public int X { get => (int) base.GetX(); set => throw new NotImplementedException(); }
+        public int Y { get => (int) base.GetY(); set => throw new NotImplementedException(); }
         public Rectangle ClientRectangle { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public System.Drawing.Size ClientSize { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public MouseCursor Cursor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public bool CursorVisible { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public bool CursorGrabbed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        //osuTK.Icon INativeWindow.Icon { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }

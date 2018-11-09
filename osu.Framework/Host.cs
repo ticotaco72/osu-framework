@@ -3,9 +3,12 @@
 
 using osu.Framework.Platform;
 using osu.Framework.Platform.Linux;
+#if !ANDROID
 using osu.Framework.Platform.MacOS;
 using osu.Framework.Platform.Windows;
+#endif
 using System;
+using osuTK;
 
 namespace osu.Framework
 {
@@ -13,14 +16,23 @@ namespace osu.Framework
     {
         public static DesktopGameHost GetSuitableHost(string gameName, bool bindIPC = false)
         {
+            var toolkitOptions = new ToolkitOptions
+            {
+                EnableHighResolution = true,
+                Backend = RuntimeInfo.OS == RuntimeInfo.Platform.Linux ? PlatformBackend.Default : PlatformBackend.PreferNative
+            };
+
             switch (RuntimeInfo.OS)
             {
+#if !ANDROID
                 case RuntimeInfo.Platform.MacOsx:
-                    return new MacOSGameHost(gameName, bindIPC);
-                case RuntimeInfo.Platform.Linux:
-                    return new LinuxGameHost(gameName, bindIPC);
+                    return new MacOSGameHost(gameName, bindIPC, toolkitOptions);
                 case RuntimeInfo.Platform.Windows:
-                    return new WindowsGameHost(gameName, bindIPC);
+                    return new WindowsGameHost(gameName, bindIPC, toolkitOptions);
+#endif
+                case RuntimeInfo.Platform.Linux:
+                    return new LinuxGameHost(gameName, bindIPC, toolkitOptions);
+
                 default:
                     throw new InvalidOperationException($"Could not find a suitable host for the selected operating system ({Enum.GetName(typeof(RuntimeInfo.Platform), RuntimeInfo.OS)}).");
             }

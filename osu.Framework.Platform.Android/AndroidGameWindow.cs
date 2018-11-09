@@ -32,15 +32,15 @@ namespace osu.Framework.Platform.Android
         internal AndroidGameWindow()
             : base(getBootResolution().X, getBootResolution().Y)
         {
-            /*
+            
             DisplayManager displayManager = (DisplayManager)Application.Context.GetSystemService(myAndroidContent.Context.DisplayService);
             Display display = displayManager.GetDisplay(Display.DefaultDisplay);
             myAndroidGraphics.Point mysize = new myAndroidGraphics.Point();
             display.GetRealSize(mysize);
-            */
+            
         }
 
-        public override DisplayDevice GetCurrentDisplay() => DisplayDevice.Default;
+        public override DisplayDevice CurrentDisplay => DisplayDevice.Default;
 
         protected new osuTK.GameWindow Implementation => (osuTK.GameWindow)base.Implementation;
 

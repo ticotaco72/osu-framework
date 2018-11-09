@@ -4,18 +4,19 @@
 using System.Collections.Generic;
 using osu.Framework.Input;
 using osu.Framework.Input.Bindings;
+using osuTK;
 
 namespace osu.Framework.Platform.MacOS
 {
     public class MacOSGameHost : DesktopGameHost
     {
-        internal MacOSGameHost(string gameName, bool bindIPC = false)
-            : base(gameName, bindIPC)
+        internal MacOSGameHost(string gameName, bool bindIPC = false, ToolkitOptions toolkitOptions = default)
+            : base(gameName, bindIPC, toolkitOptions)
         {
             Window = new MacOSGameWindow();
             Window.WindowStateChanged += (sender, e) =>
             {
-                if (Window.WindowState != osuTK.WindowState.Minimized)
+                if (Window.WindowState != WindowState.Minimized)
                     OnActivated();
                 else
                     OnDeactivated();
