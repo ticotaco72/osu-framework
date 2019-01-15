@@ -35,6 +35,8 @@ namespace osu.Framework
 
         public AudioManager Audio;
 
+        public RecordManager Record;
+
         public ShaderManager Shaders;
 
         public FontStore Fonts;
@@ -116,6 +118,7 @@ namespace osu.Framework
 
             Audio = Host.CreateAudioManager(tracks, samples, Scheduler);
             dependencies.CacheAs(Audio);
+            Record = Host.CreateRecordManager(Scheduler);
 
             Host.RegisterThread(Audio.Thread);
 

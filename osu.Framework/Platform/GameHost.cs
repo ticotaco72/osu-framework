@@ -712,6 +712,9 @@ namespace osu.Framework.Platform
         public virtual AudioManager CreateAudioManager(ResourceStore<byte[]> trackStore, ResourceStore<byte[]> sampleStore, Scheduler eventScheduler) =>
             new AudioManager(trackStore, sampleStore) { EventScheduler = eventScheduler };
 
+        public virtual RecordManager CreateRecordManager(Scheduler eventScheduler) =>
+            new RecordManager() { EventScheduler = eventScheduler };
+
         #region IDisposable Support
 
         private bool isDisposed;
