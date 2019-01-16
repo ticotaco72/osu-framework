@@ -70,12 +70,11 @@ namespace osu.Framework.Audio
         /// <summary>
         /// Constructs a RecordManager given a thread.
         /// </summary>
-        public RecordManager()
+        public RecordManager(AudioThread thread)
         {
             RecordDevice.ValueChanged += onDeviceChanged;
 
-            Thread = new AudioThread(Update);
-            Thread.Start();
+            Thread = thread;
 
             scheduler.Add(() =>
             {
@@ -175,7 +174,7 @@ namespace osu.Framework.Audio
                 return true;
             }
 
-            if (!Bass.Init(newDeviceIndex) && Bass.LastError != Errors.Already)
+            if (!Bass.RecordInit(newDeviceIndex) && Bass.LastError != Errors.Already)
             {
                 //the new device didn't go as planned. we need another option.
 
@@ -195,9 +194,9 @@ namespace osu.Framework.Audio
                 // We check if the initialization error is that we already initialized the device
                 // If it is, it means we can just tell Bass to use the already initialized device without much
                 // other fuzz.
-                Bass.CurrentDevice = newDeviceIndex;
-                Bass.Free();
-                Bass.Init(newDeviceIndex);
+                Bass.CurrentRecordingDevice = newDeviceIndex;
+                Bass.RecordFree();
+                Bass.RecordInit(newDeviceIndex);
             }
 
             Trace.Assert(Bass.LastError == Errors.OK);

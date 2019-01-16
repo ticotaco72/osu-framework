@@ -18,6 +18,7 @@ namespace osu.Framework.Audio
 {
     public class AudioManager : AudioCollectionManager<AdjustableAudioComponent>
     {
+        public RecordManager Record;
         /// <summary>
         /// The manager component responsible for audio tracks (e.g. songs).
         /// </summary>
@@ -106,6 +107,8 @@ namespace osu.Framework.Audio
 
             Thread = new AudioThread(Update);
             Thread.Start();
+
+            Record = new RecordManager(Thread);
 
             globalTrackManager = new Lazy<TrackManager>(() => GetTrackManager(trackStore));
             globalSampleManager = new Lazy<SampleManager>(() => GetSampleManager(sampleStore));
