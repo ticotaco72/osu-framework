@@ -119,6 +119,7 @@ namespace osu.Framework
             Audio = Host.CreateAudioManager(tracks, samples, Scheduler);
             dependencies.CacheAs(Audio);
             //Record = Host.CreateRecordManager(Scheduler);
+            int qwerty = Audio.Record.StartRecording();
 
             Host.RegisterThread(Audio.Thread);
 

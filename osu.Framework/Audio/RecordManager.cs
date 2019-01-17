@@ -210,9 +210,27 @@ namespace osu.Framework.Audio
             //we have successfully initialised a new device.
             currentRecordDevice = newDevice;
 
+            //managedbass' default
             Bass.RecordingBufferLength = 2000;
 
             return true;
+        }
+
+        public int StartRecording()
+        {
+            return Bass.RecordStart(44100, 1, BassFlags.Byte, 100, receiver);
+        }
+
+        private RecordProcedure receiver = new RecordProcedure(ReceivingRecording);
+
+        public static bool ReceivingRecording(int Handle, IntPtr Buffer, int Length, IntPtr User)
+        {
+            //for now we won't do anything
+            Logger.Log($@"recording in progress; handle:  {Handle}");
+            if (Handle == 0)
+                return false;
+            else
+                return true;
         }
 
         private void updateAvailableRecordDevices()
