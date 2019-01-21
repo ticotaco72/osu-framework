@@ -30,7 +30,7 @@ namespace osu.Framework.Audio
         public SampleManager Sample => GetSampleManager();
 
         /// <summary>
-        /// The thread audio operations (mainly Bass calls) are ran on.
+        /// The thread audio/record operations (mainly Bass calls) are ran on.
         /// </summary>
         internal readonly AudioThread Thread;
 

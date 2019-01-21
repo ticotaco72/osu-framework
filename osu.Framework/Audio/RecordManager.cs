@@ -15,7 +15,7 @@ using osu.Framework.Logging;
 namespace osu.Framework.Audio
 {
     //add some abstarction about devices and reading from every single one; but first implement reading from one and providing it further
-    public class RecordManager : AdjustableAudioComponent
+    public class RecordManager : RecordComponent
     {
         /// <summary>
         /// The thread audio/record operations (mainly Bass calls) are ran on.
@@ -44,13 +44,15 @@ namespace osu.Framework.Audio
         /// The preferred audio device we should use. A value of
         /// <see cref="string.Empty"/> denotes the OS default.
         /// </summary>
+        ///To trzeba zmienić na naszą klasę Record Device
         public readonly Bindable<string> RecordDevice = new Bindable<string>();
 
+        //tylko dla użytku wewnętrznego klasy; zmienić na reprezentację recorddevice
         private string currentRecordDevice;
 
-        //make some use of it
+        //make some use of it; przenieść na poziom recorddevice
         /// <summary>
-        /// Volume of all tracks played game-wide.
+        /// Master(default) volume of all RecordDevices.
         /// </summary>
         public readonly BindableDouble VolumeRecord = new BindableDouble(1)
         {
@@ -210,12 +212,17 @@ namespace osu.Framework.Audio
             //we have successfully initialised a new device.
             currentRecordDevice = newDevice;
 
-            //managedbass' default
+            //managedbass' default+
+            //think about it czy to jest koniecznne? tak, czy tutaj? Czy na pewno tutaj? czy zawsze ta sama wartość?
             Bass.RecordingBufferLength = 2000;
 
             return true;
         }
-
+        /*
+         *
+         * to nie ma tak wyglądać;
+         * start recording ma przyjmować recorddevice
+         * callback ma pójść do record device
         public int StartRecording()
         {
             return Bass.RecordStart(44100, 1, BassFlags.Byte, 100, receiver);
@@ -231,8 +238,9 @@ namespace osu.Framework.Audio
                 return false;
             else
                 return true;
-        }
+        }*/
 
+            //again make this recorddevice - based
         private void updateAvailableRecordDevices()
         {
             var currentDeviceList = getAllDevices().Where(d => d.IsEnabled).ToList();
@@ -256,6 +264,8 @@ namespace osu.Framework.Audio
             recordDeviceNames = currentDeviceNames;
         }
 
+
+        // ta funkcja ma sprawdzać czy stan któregoś z recorddevice się zmienił w bass'ie? chociaż one same będą wiedziały, ale tylko gdy nagrywają, więc w sumie ta funkcja jest konieczna
         private void checkRecordDeviceChanged()
         {
             try
