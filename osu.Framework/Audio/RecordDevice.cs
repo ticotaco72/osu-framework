@@ -7,6 +7,8 @@ namespace osu.Framework.Audio
 {
     public class RecordDevice : AudioComponent
     {
+        private RecordManager manager;
+
         public DeviceInfo Info;
 
         public double Volume;
@@ -35,5 +37,15 @@ namespace osu.Framework.Audio
         {}
 
         //changevolume()
+
+        //bufer
+
+        //isrecording
+
+        public RecordDevice(RecordManager recordManager, DeviceInfo info)
+        {
+            manager = recordManager;
+            Info = info;
+        }
     }
 }

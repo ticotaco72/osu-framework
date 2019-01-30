@@ -22,19 +22,25 @@ namespace osu.Framework.Audio
         /// </summary>
         internal readonly AudioThread Thread;
 
-        private List<DeviceInfo> recordDevices = new List<DeviceInfo>();
-        private List<string> recordDeviceNames = new List<string>();
+        private List<RecordDevice> recordDevices = new List<RecordDevice>();
+        private List<RecordDevice> readyDevices = new List<RecordDevice>();
+
+        public List<RecordDevice> AllRecordDevices => recordDevices;
+        public List<RecordDevice> NowRecordDevices => readyDevices;
+        //private List<string> recordDeviceNames = new List<string>();
 
         /// <summary>
         /// The names of all available audio devices.
         /// </summary>
-        public IEnumerable<string> RecordDeviceNames => recordDeviceNames;
+        //public IEnumerable<string> RecordDeviceNames => recordDeviceNames;
 
+        //?
         /// <summary>
         /// Is fired whenever a new audio device is discovered and provides its name.
         /// </summary>
         public event Action<string> OnNewDevice;
 
+        //?
         /// <summary>
         /// Is fired whenever an audio device is lost and provides its name.
         /// </summary>
@@ -44,11 +50,11 @@ namespace osu.Framework.Audio
         /// The preferred audio device we should use. A value of
         /// <see cref="string.Empty"/> denotes the OS default.
         /// </summary>
-        ///To trzeba zmienić na naszą klasę Record Device
-        public readonly Bindable<string> RecordDevice = new Bindable<string>();
+        ///To trzeba zmienić na dwie listy klas Record Device: dostępne i gotowe
+        //public readonly Bindable<string> RecordDevice = new Bindable<string>();
 
         //tylko dla użytku wewnętrznego klasy; zmienić na reprezentację recorddevice
-        private string currentRecordDevice;
+        //private string currentRecordDevice;
 
         //make some use of it; przenieść na poziom recorddevice
         /// <summary>
@@ -74,20 +80,20 @@ namespace osu.Framework.Audio
         /// </summary>
         public RecordManager(AudioThread thread)
         {
-            RecordDevice.ValueChanged += onDeviceChanged;
+            //RecordDevice.ValueChanged += onDeviceChanged;
 
             Thread = thread;
 
-            scheduler.Add(() =>
-            {
-                try
-                {
-                    setRecordDevice();
-                }
-                catch
-                {
-                }
-            });
+            //scheduler.Add(() =>
+            //{
+            //    try
+            //    {
+            //        setRecordDevice();
+            //    }
+            //    catch
+            //    {
+            //    }
+            //});
 
             scheduler.AddDelayed(delegate
             {
@@ -104,10 +110,10 @@ namespace osu.Framework.Audio
             base.Dispose(disposing);
         }
 
-        private void onDeviceChanged(string newDevice)
-        {
-            scheduler.Add(() => setRecordDevice(string.IsNullOrEmpty(newDevice) ? null : newDevice));
-        }
+        //private void onDeviceChanged(string newDevice)
+        //{
+        //    scheduler.Add(() => setRecordDevice(string.IsNullOrEmpty(newDevice) ? null : newDevice));
+        //}
 
         /// <summary>
         /// Returns a list of the names of recognized audio devices.
@@ -117,27 +123,27 @@ namespace osu.Framework.Audio
         /// Regarding the .Skip(1) as implementation for removing "No Sound", see http://bass.radio42.com/help/html/e5a666b4-1bdd-d1cb-555e-ce041997d52f.htm.
         /// </remarks>
         /// <returns>A list of the names of recognized audio devices.</returns>
-        private IEnumerable<string> getDeviceNames(List<DeviceInfo> devices) => devices.Select(d => d.Name);
+        private IEnumerable<string> getDeviceNames(List<RecordDevice> devices) => devices.Select(d => d.Info.Name);
 
-        private List<DeviceInfo> getAllDevices()
+        private List<RecordDevice> getAllDevices()
         {
             int deviceCount = Bass.RecordingDeviceCount;
-            List<DeviceInfo> info = new List<DeviceInfo>();
+            List<RecordDevice> info = new List<RecordDevice>();
             for (int i = 0; i < deviceCount; i++)
-                info.Add(Bass.RecordGetDeviceInfo(i));
+                info.Add(new RecordDevice { Info = Bass.RecordGetDeviceInfo(i) });
 
             return info;
         }
 
-        private bool setRecordDevice(string preferredDevice = null)
+        private bool setRecordDevice(RecordDevice preferredDevice = null)
         {
             updateAvailableRecordDevices();
 
             string oldDevice = currentRecordDevice;
-            string newDevice = preferredDevice;
+            string newDevice = preferredDevice.Info.Name;
 
             if (string.IsNullOrEmpty(newDevice))
-                newDevice = recordDevices.Find(df => df.IsDefault).Name;
+                newDevice = recordDevices.Find(df => df.Info.IsDefault).Info.Name;
 
             bool oldDeviceValid = Bass.CurrentRecordingDevice >= 0;
             if (oldDeviceValid)
@@ -155,7 +161,7 @@ namespace osu.Framework.Audio
                 return false;
             }
 
-            int newDeviceIndex = recordDevices.FindIndex(df => df.Name == newDevice);
+            int newDeviceIndex = recordDevices.FindIndex(df => df.Info.Name == newDevice);
 
             DeviceInfo newDeviceInfo = new DeviceInfo();
 
@@ -243,7 +249,7 @@ namespace osu.Framework.Audio
             //again make this recorddevice - based
         private void updateAvailableRecordDevices()
         {
-            var currentDeviceList = getAllDevices().Where(d => d.IsEnabled).ToList();
+            var currentDeviceList = getAllDevices().Where(d => d.Info.IsEnabled).ToList();
             var currentDeviceNames = getDeviceNames(currentDeviceList).ToList();
 
             var newDevices = currentDeviceNames.Except(recordDeviceNames).ToList();
@@ -280,10 +286,10 @@ namespace osu.Framework.Audio
                         {
                             foreach (var d in getAllDevices())
                             {
-                                if (d.Name == device.Name || !d.IsEnabled)
+                                if (d.Info.Name == device.Name || !d.Info.IsEnabled)
                                     continue;
 
-                                if (setRecordDevice(d.Name))
+                                if (setRecordDevice(d.Info.Name))
                                     break;
                             }
                         }
@@ -299,27 +305,27 @@ namespace osu.Framework.Audio
                         {
                             foreach (var d in getAllDevices())
                             {
-                                if (d.Name == device.Name || !d.IsEnabled)
+                                if (d.Info.Name == device.Name || !d.Info.IsEnabled)
                                     continue;
 
-                                if (setRecordDevice(d.Name))
+                                if (setRecordDevice(d.Info.Name))
                                     break;
                             }
                         }
                     }
                     else
                     {
-                        var preferredDevice = getAllDevices().SingleOrDefault(d => d.Name == RecordDevice.Value);
-                        if (preferredDevice.Name == RecordDevice.Value && preferredDevice.IsEnabled)
-                            setRecordDevice(preferredDevice.Name);
+                        var preferredDevice = getAllDevices().SingleOrDefault(d => d.Info.Name == RecordDevice.Value);
+                        if (preferredDevice.Info.Name == RecordDevice.Value && preferredDevice.Info.IsEnabled)
+                            setRecordDevice(preferredDevice.Info.Name);
                         else if (!device.IsEnabled && !setRecordDevice())
                         {
                             foreach (var d in getAllDevices())
                             {
-                                if (d.Name == device.Name || !d.IsEnabled)
+                                if (d.Info.Name == device.Name || !d.Info.IsEnabled)
                                     continue;
 
-                                if (setRecordDevice(d.Name))
+                                if (setRecordDevice(d.Info.Name))
                                     break;
                             }
                         }
