@@ -54,7 +54,7 @@ namespace osu.Framework.Audio
         //public readonly Bindable<string> RecordDevice = new Bindable<string>();
 
         //tylko dla użytku wewnętrznego klasy; zmienić na reprezentację recorddevice
-        //private string currentRecordDevice;
+        private RecordDevice currentOperationRecordDevice;
 
         //make some use of it; przenieść na poziom recorddevice
         /// <summary>
@@ -130,20 +130,41 @@ namespace osu.Framework.Audio
             int deviceCount = Bass.RecordingDeviceCount;
             List<RecordDevice> info = new List<RecordDevice>();
             for (int i = 0; i < deviceCount; i++)
-                info.Add(new RecordDevice { Info = Bass.RecordGetDeviceInfo(i) });
+                info.Add(new RecordDevice(this, Bass.RecordGetDeviceInfo(i)));
 
             return info;
         }
 
-        private bool setRecordDevice(RecordDevice preferredDevice = null)
+        private void setCurrentOperationRecordDevice(RecordDevice recordDevice)
         {
-            updateAvailableRecordDevices();
+            //zaaktualizuj info/listę
+            if (recordDevice.Info.IsInitialized && recordDevice.Info.IsEnabled)
+            {
+                if (Bass.RecordGetDeviceInfo(Bass.CurrentRecordingDevice).Name != recordDevice.Info.Name)
+                    Bass.CurrentRecordingDevice = recordDevices.FindIndex(df => df.Info.Name == recordDevice.Info.Name);
+                else
+                    return;
+            }
+            else
+            {
+                if (recordDevice.Info.IsEnabled)
+                    initRecordDevice(recordDevice);
+                else
+                    //give there some normal exception
+                    throw new Exception();
+            }
+        }
 
-            string oldDevice = currentRecordDevice;
+        private bool initRecordDevice(RecordDevice preferredDevice )//add argument if currentopertionrecorddevice has to change back amd selete every not needed check null?????
+        {
+            //instead check if podane urzadzenie istnieje i jest gotowe
+            //updateAvailableRecordDevices();
+
+            //string oldDevice = currentOperationRecordDevice.Info.Name;
             string newDevice = preferredDevice.Info.Name;
 
-            if (string.IsNullOrEmpty(newDevice))
-                newDevice = recordDevices.Find(df => df.Info.IsDefault).Info.Name;
+            //if (string.IsNullOrEmpty(newDevice))
+            //    newDevice = recordDevices.Find(df => df.Info.IsDefault).Info.Name;
 
             bool oldDeviceValid = Bass.CurrentRecordingDevice >= 0;
             if (oldDeviceValid)

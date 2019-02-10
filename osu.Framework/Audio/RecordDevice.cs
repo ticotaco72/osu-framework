@@ -36,13 +36,13 @@ namespace osu.Framework.Audio
         public void StopRecord()
         {}
 
-        //changevolume()
+        //changevolume() albo bindable
 
         //bufer
 
-        //isrecording
+        //isrecording????????????
 
-        public RecordDevice(RecordManager recordManager, DeviceInfo info)
+        internal RecordDevice(RecordManager recordManager, DeviceInfo info)//add input info oraz input type oraz volume oraz kreacje bufora
         {
             manager = recordManager;
             Info = info;
