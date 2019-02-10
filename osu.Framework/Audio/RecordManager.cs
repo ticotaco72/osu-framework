@@ -155,7 +155,7 @@ namespace osu.Framework.Audio
             }
         }
 
-        private bool initRecordDevice(RecordDevice preferredDevice )//add argument if currentopertionrecorddevice has to change back amd selete every not needed check null?????
+        private bool initRecordDevice(RecordDevice preferredDevice)
         {
             //instead check if podane urzadzenie istnieje i jest gotowe
             //updateAvailableRecordDevices();
@@ -166,13 +166,13 @@ namespace osu.Framework.Audio
             //if (string.IsNullOrEmpty(newDevice))
             //    newDevice = recordDevices.Find(df => df.Info.IsDefault).Info.Name;
 
-            bool oldDeviceValid = Bass.CurrentRecordingDevice >= 0;
-            if (oldDeviceValid)
-            {
-                DeviceInfo oldDeviceInfo = Bass.RecordGetDeviceInfo(Bass.CurrentRecordingDevice);
-                oldDeviceValid &= oldDeviceInfo.IsEnabled && oldDeviceInfo.IsInitialized;
-            }
-
+            //bool oldDeviceValid = Bass.CurrentRecordingDevice >= 0;
+            //if (oldDeviceValid)
+            //{
+            //    DeviceInfo oldDeviceInfo = Bass.RecordGetDeviceInfo(Bass.CurrentRecordingDevice);
+            //    oldDeviceValid &= oldDeviceInfo.IsEnabled && oldDeviceInfo.IsInitialized;
+            //}
+            /*
             if (newDevice == oldDevice && oldDeviceValid)
                 return true;
 
@@ -181,11 +181,11 @@ namespace osu.Framework.Audio
                 Logger.Log(@"BASS Initialization failed (no record device present)");
                 return false;
             }
-
+*/
             int newDeviceIndex = recordDevices.FindIndex(df => df.Info.Name == newDevice);
-
+            /*
             DeviceInfo newDeviceInfo = new DeviceInfo();
-
+            
             try
             {
                 if (newDeviceIndex >= 0)
@@ -202,11 +202,12 @@ namespace osu.Framework.Audio
                 //and we have already fallen back to a sane default.
                 return true;
             }
-
+*/
             if (!Bass.RecordInit(newDeviceIndex) && Bass.LastError != Errors.Already)
             {
+                //throw blabla
                 //the new device didn't go as planned. we need another option.
-
+                /*
                 if (preferredDevice == null)
                 {
                     //we're fucked. the default device won't initialise.
@@ -216,6 +217,7 @@ namespace osu.Framework.Audio
 
                 //let's try again using the default device.
                 return setRecordDevice();
+                */
             }
 
             if (Bass.LastError == Errors.Already)
@@ -233,13 +235,13 @@ namespace osu.Framework.Audio
             Logger.Log($@"BASS Initialized
                           BASS Version:               {Bass.Version}
                           BASS FX Version:            {ManagedBass.Fx.BassFx.Version}
-                          Device:                     {newDeviceInfo.Name}
-                          Drive:                      {newDeviceInfo.Driver}");
+                          Device:                     {preferredDevice.Info.Name}
+                          Drive:                      {preferredDevice.Info.Driver}");
 
             //we have successfully initialised a new device.
-            currentRecordDevice = newDevice;
+            currentOperationRecordDevice = preferredDevice;
 
-            //managedbass' default+
+            //managedbass' default
             //think about it czy to jest koniecznne? tak, czy tutaj? Czy na pewno tutaj? czy zawsze ta sama wartość?
             Bass.RecordingBufferLength = 2000;
 
