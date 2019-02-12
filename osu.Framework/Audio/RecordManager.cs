@@ -130,7 +130,7 @@ namespace osu.Framework.Audio
             int deviceCount = Bass.RecordingDeviceCount;
             List<RecordDevice> info = new List<RecordDevice>();
             for (int i = 0; i < deviceCount; i++)
-                info.Add(new RecordDevice(this, Bass.RecordGetDeviceInfo(i)));
+                info.Add(new RecordDevice(this, Bass.RecordGetDeviceInfo(i), i));
 
             return info;
         }
@@ -272,13 +272,29 @@ namespace osu.Framework.Audio
             //again make this recorddevice - based
         private void updateAvailableRecordDevices()
         {
-            var currentDeviceList = getAllDevices().Where(d => d.Info.IsEnabled).ToList();
-            var currentDeviceNames = getDeviceNames(currentDeviceList).ToList();
+            var currentDeviceList = getAllDevices().ToList();//.Where(d => d.Info.IsEnabled).ToList();
+            //var currentDeviceNames = getDeviceNames(currentDeviceList).ToList();
 
-            var newDevices = currentDeviceNames.Except(recordDeviceNames).ToList();
-            var lostDevices = recordDeviceNames.Except(currentDeviceNames).ToList();
+            var newDevices = currentDeviceList.Except(recordDevices).ToList();
+            var lostDevices = recordDevices.Except(currentDeviceList).ToList();
 
-            if (newDevices.Count > 0 || lostDevices.Count > 0)
+            foreach (RecordDevice device in newDevices)
+            {
+                recordDevices.Add(device);
+            }
+            foreach (RecordDevice device in lostDevices)
+            {
+                recordDevices[recordDevices.FindIndex(df => df.Info.Name == device.Info.Name)].Dispose();//lub set bassindex to -2;
+            }
+            //add writing changes to existing devices
+            for (int i=0; i < currentDeviceList.Count(); i++)
+            {
+                recordDevices[recordDevices.FindIndex(df => df.Info.Name == currentDeviceList[i].Info.Name)].BassIndex = i;
+                //add changing other members
+            }
+
+
+            /*if (newDevices.Count > 0 || lostDevices.Count > 0)
             {
                 eventScheduler.Add(delegate
                 {
@@ -287,13 +303,13 @@ namespace osu.Framework.Audio
                     foreach (var d in lostDevices)
                         OnLostDevice?.Invoke(d);
                 });
-            }
+            }*/
 
-            recordDevices = currentDeviceList;
-            recordDeviceNames = currentDeviceNames;
+            //recordDevices = currentDeviceList;
+            //recordDeviceNames = currentDeviceNames;
         }
 
-
+        //to nie będzie potrzebne
         // ta funkcja ma sprawdzać czy stan któregoś z recorddevice się zmienił w bass'ie? chociaż one same będą wiedziały, ale tylko gdy nagrywają, więc w sumie ta funkcja jest konieczna
         private void checkRecordDeviceChanged()
         {

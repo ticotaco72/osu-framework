@@ -13,6 +13,8 @@ namespace osu.Framework.Audio
 
         public double Volume;
 
+        internal int BassIndex;
+
         //make an enum for this, we will use only master input of each device, chyba że możliwe jest jakiś surround?, ale to chyba nie jest konieczne/potrzebne
         public int InputType;
 
@@ -20,12 +22,14 @@ namespace osu.Framework.Audio
 
         //urządzenie stan
 
-        //public initdevice??????
+        //public initdevice??????// trgo tutaj nie będzie , wszystko ma się odbywać w starrt record
 
-        public bool StartRecord()
+        public bool StartRecord()//void
         {
             return true;
         }
+
+        //delegate
 
         //this is the callback
         public bool ReceiveData()
@@ -42,10 +46,13 @@ namespace osu.Framework.Audio
 
         //isrecording????????????
 
-        internal RecordDevice(RecordManager recordManager, DeviceInfo info)//add input info oraz input type oraz volume oraz kreacje bufora
+        internal RecordDevice(RecordManager recordManager, DeviceInfo info, int index)//add input info oraz input type oraz volume oraz kreacje bufora
         {
             manager = recordManager;
             Info = info;
+            BassIndex = index;
         }
+
+        //dispose
     }
 }
