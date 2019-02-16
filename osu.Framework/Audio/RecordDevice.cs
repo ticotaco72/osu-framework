@@ -5,7 +5,7 @@ using ManagedBass;
 
 namespace osu.Framework.Audio
 {
-    public class RecordDevice : AudioComponent
+    public class RecordDevice : RecordComponent
     {
         private RecordManager manager;
 

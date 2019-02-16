@@ -27,33 +27,7 @@ namespace osu.Framework.Audio
 
         public List<RecordDevice> AllRecordDevices => recordDevices;
         public List<RecordDevice> NowRecordDevices => readyDevices;
-        //private List<string> recordDeviceNames = new List<string>();
 
-        /// <summary>
-        /// The names of all available audio devices.
-        /// </summary>
-        //public IEnumerable<string> RecordDeviceNames => recordDeviceNames;
-
-        //?
-        /// <summary>
-        /// Is fired whenever a new audio device is discovered and provides its name.
-        /// </summary>
-        public event Action<string> OnNewDevice;
-
-        //?
-        /// <summary>
-        /// Is fired whenever an audio device is lost and provides its name.
-        /// </summary>
-        public event Action<string> OnLostDevice;
-
-        /// <summary>
-        /// The preferred audio device we should use. A value of
-        /// <see cref="string.Empty"/> denotes the OS default.
-        /// </summary>
-        ///To trzeba zmienić na dwie listy klas Record Device: dostępne i gotowe
-        //public readonly Bindable<string> RecordDevice = new Bindable<string>();
-
-        //tylko dla użytku wewnętrznego klasy; zmienić na reprezentację recorddevice
         private RecordDevice currentOperationRecordDevice;
 
         //make some use of it; przenieść na poziom recorddevice
@@ -93,16 +67,11 @@ namespace osu.Framework.Audio
 
         protected override void Dispose(bool disposing)
         {
-            OnNewDevice = null;
-            OnLostDevice = null;
+            //OnNewDevice = null;
+            //OnLostDevice = null;
 
             base.Dispose(disposing);
         }
-
-        //private void onDeviceChanged(string newDevice)
-        //{
-        //    scheduler.Add(() => setRecordDevice(string.IsNullOrEmpty(newDevice) ? null : newDevice));
-        //}
 
         /// <summary>
         /// Returns a list of the names of recognized audio devices.
@@ -126,7 +95,7 @@ namespace osu.Framework.Audio
 
         private void setCurrentOperationRecordDevice(RecordDevice recordDevice)
         {
-            //zaaktualizuj info/listę
+            updateAvailableRecordDevices();
             if (recordDevice.Info.IsInitialized && recordDevice.Info.IsEnabled)
             {
                 if (Bass.RecordGetDeviceInfo(Bass.CurrentRecordingDevice).Name != recordDevice.Info.Name)
