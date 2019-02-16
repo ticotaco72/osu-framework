@@ -84,17 +84,6 @@ namespace osu.Framework.Audio
 
             Thread = thread;
 
-            //scheduler.Add(() =>
-            //{
-            //    try
-            //    {
-            //        setRecordDevice();
-            //    }
-            //    catch
-            //    {
-            //    }
-            //});
-
             scheduler.AddDelayed(delegate
             {
                 updateAvailableRecordDevices();
@@ -157,67 +146,9 @@ namespace osu.Framework.Audio
 
         private bool initRecordDevice(RecordDevice preferredDevice)
         {
-            //instead check if podane urzadzenie istnieje i jest gotowe
-            //updateAvailableRecordDevices();
-
-            //string oldDevice = currentOperationRecordDevice.Info.Name;
-            string newDevice = preferredDevice.Info.Name;
-
-            //if (string.IsNullOrEmpty(newDevice))
-            //    newDevice = recordDevices.Find(df => df.Info.IsDefault).Info.Name;
-
-            //bool oldDeviceValid = Bass.CurrentRecordingDevice >= 0;
-            //if (oldDeviceValid)
-            //{
-            //    DeviceInfo oldDeviceInfo = Bass.RecordGetDeviceInfo(Bass.CurrentRecordingDevice);
-            //    oldDeviceValid &= oldDeviceInfo.IsEnabled && oldDeviceInfo.IsInitialized;
-            //}
-            /*
-            if (newDevice == oldDevice && oldDeviceValid)
-                return true;
-
-            if (string.IsNullOrEmpty(newDevice))
+            if (!Bass.RecordInit(preferredDevice.BassIndex) && Bass.LastError != Errors.Already)
             {
-                Logger.Log(@"BASS Initialization failed (no record device present)");
-                return false;
-            }
-*/
-            int newDeviceIndex = recordDevices.FindIndex(df => df.Info.Name == newDevice);
-            /*
-            DeviceInfo newDeviceInfo = new DeviceInfo();
-            
-            try
-            {
-                if (newDeviceIndex >= 0)
-                    newDeviceInfo = Bass.RecordGetDeviceInfo(newDeviceIndex);
-                //we may have previously initialised this device.
-            }
-            catch
-            {
-            }
-
-            if (oldDeviceValid && (newDeviceInfo.Driver == null || !newDeviceInfo.IsEnabled))
-            {
-                //handles the case we are trying to load a user setting which is currently unavailable,
-                //and we have already fallen back to a sane default.
-                return true;
-            }
-*/
-            if (!Bass.RecordInit(newDeviceIndex) && Bass.LastError != Errors.Already)
-            {
-                //throw blabla
-                //the new device didn't go as planned. we need another option.
-                /*
-                if (preferredDevice == null)
-                {
-                    //we're fucked. the default device won't initialise.
-                    currentRecordDevice = null;
-                    return false;
-                }
-
-                //let's try again using the default device.
-                return setRecordDevice();
-                */
+                throw new Exception();
             }
 
             if (Bass.LastError == Errors.Already)
@@ -225,9 +156,9 @@ namespace osu.Framework.Audio
                 // We check if the initialization error is that we already initialized the device
                 // If it is, it means we can just tell Bass to use the already initialized device without much
                 // other fuzz.
-                Bass.CurrentRecordingDevice = newDeviceIndex;
+                Bass.CurrentRecordingDevice = preferredDevice.BassIndex;
                 Bass.RecordFree();
-                Bass.RecordInit(newDeviceIndex);
+                Bass.RecordInit(preferredDevice.BassIndex);
             }
 
             Trace.Assert(Bass.LastError == Errors.OK);
@@ -239,6 +170,7 @@ namespace osu.Framework.Audio
                           Drive:                      {preferredDevice.Info.Driver}");
 
             //we have successfully initialised a new device.
+            //taka opcja prawdopodobnie tylko kopiuje wartosci, amy chcemy zeby to bylo reference do oryginału
             currentOperationRecordDevice = preferredDevice;
 
             //managedbass' default
@@ -273,7 +205,6 @@ namespace osu.Framework.Audio
         private void updateAvailableRecordDevices()
         {
             var currentDeviceList = getAllDevices().ToList();//.Where(d => d.Info.IsEnabled).ToList();
-            //var currentDeviceNames = getDeviceNames(currentDeviceList).ToList();
 
             var newDevices = currentDeviceList.Except(recordDevices).ToList();
             var lostDevices = recordDevices.Except(currentDeviceList).ToList();
@@ -289,24 +220,11 @@ namespace osu.Framework.Audio
             //add writing changes to existing devices
             for (int i=0; i < currentDeviceList.Count(); i++)
             {
-                recordDevices[recordDevices.FindIndex(df => df.Info.Name == currentDeviceList[i].Info.Name)].BassIndex = i;
-                //add changing other members
+                var index = recordDevices.FindIndex(df => df.Info.Name == currentDeviceList[i].Info.Name);
+                recordDevices[index].BassIndex = i;
+                recordDevices[index].Info = currentDeviceList[i].Info;
+                //add changing other members(volume)
             }
-
-
-            /*if (newDevices.Count > 0 || lostDevices.Count > 0)
-            {
-                eventScheduler.Add(delegate
-                {
-                    foreach (var d in newDevices)
-                        OnNewDevice?.Invoke(d);
-                    foreach (var d in lostDevices)
-                        OnLostDevice?.Invoke(d);
-                });
-            }*/
-
-            //recordDevices = currentDeviceList;
-            //recordDeviceNames = currentDeviceNames;
         }
 
         //to nie będzie potrzebne
