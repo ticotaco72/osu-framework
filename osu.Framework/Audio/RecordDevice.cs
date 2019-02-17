@@ -24,6 +24,8 @@ namespace osu.Framework.Audio
 
         //public initdevice??????// trgo tutaj nie będzie , wszystko ma się odbywać w starrt record
 
+        internal int Handle;
+
         public bool StartRecord()//void
         {
             return true;
@@ -32,7 +34,7 @@ namespace osu.Framework.Audio
         //delegate
 
         //this is the callback
-        public bool ReceiveData()
+        public bool ReceiveData(int Handle, IntPtr Buffer, int Length, IntPtr User)
         {
             return false;
         }

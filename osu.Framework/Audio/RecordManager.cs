@@ -61,7 +61,7 @@ namespace osu.Framework.Audio
             scheduler.AddDelayed(delegate
             {
                 updateAvailableRecordDevices();
-                checkRecordDeviceChanged();
+                //checkRecordDeviceChanged();
             }, 1000, true);
         }
 
@@ -148,29 +148,13 @@ namespace osu.Framework.Audio
 
             return true;
         }
-        /*
-         *
-         * to nie ma tak wyglądać;
-         * start recording ma przyjmować recorddevice
-         * callback ma pójść do record device
-        public int StartRecording()
+
+        public void StartRecording(RecordDevice device)
         {
-            return Bass.RecordStart(44100, 1, BassFlags.Byte, 100, receiver);
+            //add some conditionals for arguments of the statement
+            device.Handle = Bass.RecordStart(44100, 1, BassFlags.Byte, 100, device.ReceiveData);
         }
 
-        private RecordProcedure receiver = new RecordProcedure(ReceivingRecording);
-
-        public static bool ReceivingRecording(int Handle, IntPtr Buffer, int Length, IntPtr User)
-        {
-            //for now we won't do anything
-            Logger.Log($@"recording in progress; handle:  {Handle}");
-            if (Handle == 0)
-                return false;
-            else
-                return true;
-        }*/
-
-            //again make this recorddevice - based
         private void updateAvailableRecordDevices()
         {
             var currentDeviceList = getAllDevices().ToList();//.Where(d => d.Info.IsEnabled).ToList();
@@ -196,73 +180,6 @@ namespace osu.Framework.Audio
             }
         }
 
-        //to nie będzie potrzebne
-        // ta funkcja ma sprawdzać czy stan któregoś z recorddevice się zmienił w bass'ie? chociaż one same będą wiedziały, ale tylko gdy nagrywają, więc w sumie ta funkcja jest konieczna
-        private void checkRecordDeviceChanged()
-        {
-            try
-            {
-                if (RecordDevice.Value == string.Empty)
-                {
-                    // use default device
-                    var device = Bass.RecordGetDeviceInfo(Bass.CurrentRecordingDevice);
-                    if (!device.IsDefault && !setRecordDevice())
-                    {
-                        if (!device.IsEnabled || !setRecordDevice(device.Name))
-                        {
-                            foreach (var d in getAllDevices())
-                            {
-                                if (d.Info.Name == device.Name || !d.Info.IsEnabled)
-                                    continue;
-
-                                if (setRecordDevice(d.Info.Name))
-                                    break;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    // use whatever is the preferred device
-                    var device = Bass.RecordGetDeviceInfo(Bass.CurrentRecordingDevice);
-                    if (device.Name == RecordDevice.Value)
-                    {
-                        if (!device.IsEnabled && !setRecordDevice())
-                        {
-                            foreach (var d in getAllDevices())
-                            {
-                                if (d.Info.Name == device.Name || !d.Info.IsEnabled)
-                                    continue;
-
-                                if (setRecordDevice(d.Info.Name))
-                                    break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        var preferredDevice = getAllDevices().SingleOrDefault(d => d.Info.Name == RecordDevice.Value);
-                        if (preferredDevice.Info.Name == RecordDevice.Value && preferredDevice.Info.IsEnabled)
-                            setRecordDevice(preferredDevice.Info.Name);
-                        else if (!device.IsEnabled && !setRecordDevice())
-                        {
-                            foreach (var d in getAllDevices())
-                            {
-                                if (d.Info.Name == device.Name || !d.Info.IsEnabled)
-                                    continue;
-
-                                if (setRecordDevice(d.Info.Name))
-                                    break;
-                            }
-                        }
-                    }
-                }
-            }
-            catch
-            {
-            }
-        }
-
-        public override string ToString() => $@"{GetType().ReadableName()} ({currentRecordDevice})";
+        public override string ToString() => $@"{GetType().ReadableName()} ({currentOperationRecordDevice.Info.Name})";
     }
 }
