@@ -18,6 +18,31 @@ namespace osu.Framework.Audio
         //make an enum for this, we will use only master input of each device, chyba że możliwe jest jakiś surround?, ale to chyba nie jest konieczne/potrzebne
         public int InputType;
 
+        //for combination that contains MaxBits and MaxChannels
+        public int MaxFrequency;
+
+        //for combination that contains MaxBits
+        public int MaxChannels;
+
+        public int MaxBits;
+
+        internal RecordInfo AvailableOptionsInfo
+        {
+            set
+            {
+                switch(value.SupportedFormats)
+                {//najpierw sortowanie(tych opcji) po ilosci bitow
+                    //potem po ilosci kanałow
+                    //potem po ilosci kHz
+                    case RecordFormatFlags.WF96S16:
+                        MaxBits = 16;
+                        MaxChannels = 2;
+                        MaxFrequency = 96000;
+                        break;
+                }
+            }
+        }
+
         //input stan
 
         //urządzenie stan
@@ -39,6 +64,8 @@ namespace osu.Framework.Audio
             return false;
         }
 
+        //public RecordProcedure Receiver = new RecordProcedure(ReceiveData);
+
         public void StopRecord()
         {}
 
@@ -48,10 +75,11 @@ namespace osu.Framework.Audio
 
         //isrecording????????????
 
-        internal RecordDevice(RecordManager recordManager, DeviceInfo info, int index)//add input info oraz input type oraz volume oraz kreacje bufora
+        internal RecordDevice(RecordManager recordManager, DeviceInfo info, RecordInfo recordInfo, int index)//add input info oraz input type oraz volume oraz kreacje bufora
         {
             manager = recordManager;
             Info = info;
+            AvailableOptionsInfo = recordInfo;
             BassIndex = index;
         }
 

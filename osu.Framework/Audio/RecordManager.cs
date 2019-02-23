@@ -88,7 +88,7 @@ namespace osu.Framework.Audio
             int deviceCount = Bass.RecordingDeviceCount;
             List<RecordDevice> info = new List<RecordDevice>();
             for (int i = 0; i < deviceCount; i++)
-                info.Add(new RecordDevice(this, Bass.RecordGetDeviceInfo(i), i));
+                info.Add(new RecordDevice(this, Bass.RecordGetDeviceInfo(i), Bass.RecordingInfo, i));
 
             return info;
         }
@@ -152,7 +152,7 @@ namespace osu.Framework.Audio
         public void StartRecording(RecordDevice device)
         {
             //add some conditionals for arguments of the statement
-            device.Handle = Bass.RecordStart(44100, 1, BassFlags.Byte, 100, device.ReceiveData);
+            device.Handle = Bass.RecordStart(device.MaxFrequency, device.MaxChannels, BassFlags.Default, 100, device.ReceiveData);
         }
 
         private void updateAvailableRecordDevices()

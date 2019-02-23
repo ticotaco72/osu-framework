@@ -28,6 +28,7 @@ namespace osu.Framework.Threading
             base.PerformExit();
 
             ManagedBass.Bass.Free();
+            //inaczej  kijdnckjdncidhjcvjhndicvjnfjdbnevijufhvuifhvjuh>??))(*(_)_+_{:?|<><><:< <>LMLKP:
             ManagedBass.Bass.RecordFree();
         }
     }
