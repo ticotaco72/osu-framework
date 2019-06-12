@@ -152,7 +152,11 @@ namespace osu.Framework.Audio
         public void StartRecording(RecordDevice device)
         {
             //add some conditionals for arguments of the statement
-            device.Handle = Bass.RecordStart(device.MaxFrequency, device.MaxChannels, BassFlags.Default, 100, device.ReceiveData);
+            if (device.MaxBits!=8)
+                device.Handle = Bass.RecordStart(device.MaxFrequency, device.MaxChannels, BassFlags.Default, 100, device.ReceiveData);
+            else
+                device.Handle = Bass.RecordStart(device.MaxFrequency, device.MaxChannels, BassFlags.Byte, 100, device.ReceiveData);
+            //add handling of errors
         }
 
         private void updateAvailableRecordDevices()
