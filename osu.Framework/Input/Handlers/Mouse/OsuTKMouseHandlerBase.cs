@@ -1,5 +1,5 @@
-﻿// Copyright (c) 2007-2018 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
 
 using osu.Framework.Input.StateChanges;
 using osu.Framework.Platform;
@@ -36,6 +36,7 @@ namespace osu.Framework.Input.Handlers.Mouse
             else
             {
                 var delta = state.Position - lastState.Position;
+
                 if (delta != Vector2.Zero)
                 {
                     PendingInputs.Enqueue(new MousePositionRelativeInput { Delta = delta });
@@ -46,6 +47,7 @@ namespace osu.Framework.Input.Handlers.Mouse
             if (lastState != null && state.WasActive)
             {
                 var scrollDelta = state.Scroll - lastState.Scroll;
+
                 if (scrollDelta != Vector2.Zero)
                 {
                     PendingInputs.Enqueue(new MouseScrollRelativeInput { Delta = scrollDelta, IsPrecise = state.HasPreciseScroll });

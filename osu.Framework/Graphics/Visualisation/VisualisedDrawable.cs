@@ -1,5 +1,5 @@
-﻿// Copyright (c) 2007-2018 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
 
 using System;
 using System.Collections.Generic;
@@ -335,6 +335,7 @@ namespace osu.Framework.Graphics.Visualisation
         private void updateSpecifics()
         {
             Vector2 posInTree = ToSpaceOfOtherDrawable(Vector2.Zero, tree);
+
             if (posInTree.Y < -previewBox.DrawHeight || posInTree.Y > tree.Height)
             {
                 text.Text = string.Empty;

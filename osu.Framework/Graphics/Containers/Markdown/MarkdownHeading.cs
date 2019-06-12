@@ -1,6 +1,5 @@
-﻿// Copyright (c) 2007-2018 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
-
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
 
 using Markdig.Syntax;
 using osu.Framework.Allocation;
@@ -49,12 +48,16 @@ namespace osu.Framework.Graphics.Containers.Markdown
             {
                 case 1:
                     return 2.7f;
+
                 case 2:
                     return 2;
+
                 case 3:
                     return 1.5f;
+
                 case 4:
                     return 1.3f;
+
                 default:
                     return 1;
             }

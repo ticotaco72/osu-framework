@@ -1,8 +1,10 @@
-// Copyright (c) 2007-2018 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using osu.Framework.Platform;
 
@@ -45,6 +47,9 @@ namespace osu.Framework.IO.Stores
         }
 
         public Stream GetStream(string name) => storage.GetStream(name);
+
+        public IEnumerable<string> GetAvailableResources() =>
+            storage.GetDirectories(string.Empty).SelectMany(storage.GetFiles);
 
         #region IDisposable Support
 

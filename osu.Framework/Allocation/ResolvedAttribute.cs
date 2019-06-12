@@ -1,12 +1,12 @@
-﻿// Copyright (c) 2007-2018 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using JetBrains.Annotations;
-using osu.Framework.Configuration;
+using osu.Framework.Bindables;
 using osu.Framework.Extensions.TypeExtensions;
 using osu.Framework.Graphics;
 
@@ -73,6 +73,7 @@ namespace osu.Framework.Allocation
             var activators = new List<Action<object, IReadOnlyDependencyContainer>>();
 
             var properties = type.GetProperties(activator_flags).Where(f => f.GetCustomAttribute<ResolvedAttribute>() != null);
+
             foreach (var property in properties)
             {
                 if (!property.CanWrite)
@@ -85,6 +86,7 @@ namespace osu.Framework.Allocation
                 var attribute = property.GetCustomAttribute<ResolvedAttribute>();
 
                 var cacheInfo = new CacheInfo(attribute.Name);
+
                 if (attribute.Parent != null)
                 {
                     // When a parent type exists, infer the property name if one is not provided

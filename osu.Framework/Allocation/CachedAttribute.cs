@@ -1,5 +1,5 @@
-// Copyright (c) 2007-2018 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
 
 using System;
 using System.Collections.Generic;
@@ -103,6 +103,7 @@ namespace osu.Framework.Allocation
                         throw new AccessModifierNotAllowedForCachedValueException(AccessModifier.None, pi);
 
                     var setMethod = pi.SetMethod;
+
                     if (setMethod != null)
                     {
                         var modifier = setMethod.GetAccessModifier();
@@ -115,11 +116,13 @@ namespace osu.Framework.Allocation
 
                     break;
                 }
+
                 case FieldInfo fi:
                 {
                     var modifier = fi.GetAccessModifier();
                     if (modifier != AccessModifier.Private && !fi.IsInitOnly)
                         throw new AccessModifierNotAllowedForCachedValueException(modifier, fi);
+
                     break;
                 }
             }
@@ -140,6 +143,7 @@ namespace osu.Framework.Allocation
                     {
                         if (allowValueTypes)
                             return;
+
                         throw new NullReferenceException($"Attempted to cache a null value: {type.ReadableName()}.{member.Name}.");
                     }
 

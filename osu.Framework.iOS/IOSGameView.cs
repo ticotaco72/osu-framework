@@ -1,5 +1,5 @@
-// Copyright (c) 2007-2018 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
 
 using System;
 using Foundation;
@@ -24,7 +24,8 @@ namespace osu.Framework.iOS
         public static Class LayerClass() => GetLayerClass();
 
         [Export("initWithFrame:")]
-        public IOSGameView(System.Drawing.RectangleF frame) : base(frame)
+        public IOSGameView(System.Drawing.RectangleF frame)
+            : base(frame)
         {
             Scale = (float)UIScreen.MainScreen.Scale;
             ContentScaleFactor = UIScreen.MainScreen.Scale;
@@ -45,6 +46,21 @@ namespace osu.Framework.iOS
 
         public float Scale { get; private set; }
 
+        // SafeAreaInsets is cached to prevent access outside the main thread
+        private UIEdgeInsets safeArea = UIEdgeInsets.Zero;
+
+        internal UIEdgeInsets SafeArea
+        {
+            get => safeArea;
+            set
+            {
+                if (value.Equals(safeArea))
+                    return;
+                safeArea = value;
+                OnResize(EventArgs.Empty);
+            }
+        }
+
         public override void TouchesBegan(NSSet touches, UIEvent evt) => HandleTouches?.Invoke(touches);
         public override void TouchesCancelled(NSSet touches, UIEvent evt) => HandleTouches?.Invoke(touches);
         public override void TouchesEnded(NSSet touches, UIEvent evt) => HandleTouches?.Invoke(touches);
@@ -58,6 +74,12 @@ namespace osu.Framework.iOS
 
         private bool needsResizeFrameBuffer;
         public void RequestResizeFrameBuffer() => needsResizeFrameBuffer = true;
+
+        public override void LayoutSubviews()
+        {
+            base.LayoutSubviews();
+            SafeArea = SafeAreaInsets;
+        }
 
         public override void SwapBuffers()
         {
@@ -83,6 +105,10 @@ namespace osu.Framework.iOS
             public const int CURSOR_POSITION = 5;
 
             private int responderSemaphore;
+
+            public override UITextSmartDashesType SmartDashesType => UITextSmartDashesType.No;
+            public override UITextSmartInsertDeleteType SmartInsertDeleteType => UITextSmartInsertDeleteType.No;
+            public override UITextSmartQuotesType SmartQuotesType => UITextSmartQuotesType.No;
 
             public DummyTextField()
             {

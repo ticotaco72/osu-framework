@@ -1,5 +1,5 @@
-﻿// Copyright (c) 2007-2018 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
 
 using System;
 using System.Diagnostics;
@@ -77,7 +77,6 @@ namespace osu.Framework.Graphics.Containers
                 updatePadding();
             }
         }
-
 
         /// <summary>
         /// Size of available content (i.e. everything that can be scrolled to) in the scroll direction.
@@ -264,6 +263,7 @@ namespace osu.Framework.Graphics.Containers
                     case Key.PageUp:
                         ScrollTo(target - displayableContent);
                         return true;
+
                     case Key.PageDown:
                         ScrollTo(target + displayableContent);
                         return true;
@@ -415,7 +415,7 @@ namespace osu.Framework.Graphics.Containers
 
         private void scrollTo(float value, bool animated, double distanceDecay = float.PositiveInfinity)
         {
-            target = value;
+            target = Clamp(value, ClampExtension);
 
             if (animated)
                 this.distanceDecay = distanceDecay;
@@ -509,12 +509,12 @@ namespace osu.Framework.Graphics.Containers
             if (ScrollDirection == Direction.Horizontal)
             {
                 Scrollbar.X = Current * Scrollbar.Size.X;
-                content.X = -Current;
+                content.X = -Current + scrollableExtent * content.RelativeAnchorPosition.X;
             }
             else
             {
                 Scrollbar.Y = Current * Scrollbar.Size.Y;
-                content.Y = -Current;
+                content.Y = -Current + scrollableExtent * content.RelativeAnchorPosition.Y;
             }
         }
 
@@ -635,9 +635,11 @@ namespace osu.Framework.Graphics.Containers
                 case PlatformActionType.LineStart:
                     ScrollToStart();
                     return true;
+
                 case PlatformActionType.LineEnd:
                     ScrollToEnd();
                     return true;
+
                 default:
                     return false;
             }

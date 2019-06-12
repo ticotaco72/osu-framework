@@ -1,5 +1,5 @@
-// Copyright (c) 2007-2018 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
 
 using osu.Framework.MathUtils;
 using System;
@@ -19,6 +19,7 @@ namespace osu.Framework.Graphics.Transforms
     internal class TransformCustom<TValue, T> : Transform<TValue, T> where T : ITransformable
     {
         private delegate TValue ReadFunc(T transformable);
+
         private delegate void WriteFunc(T transformable, TValue value);
 
         private struct Accessor
@@ -31,7 +32,7 @@ namespace osu.Framework.Graphics.Transforms
 
         private static ReadFunc createFieldGetter(FieldInfo field)
         {
-            if (!RuntimeInfo.SupportsIL) return transformable => (TValue)field.GetValue(transformable);
+            if (!RuntimeInfo.SupportsJIT) return transformable => (TValue)field.GetValue(transformable);
 
             string methodName = $"{typeof(T).ReadableName()}.{field.Name}.get_{Guid.NewGuid():N}";
             DynamicMethod setterMethod = new DynamicMethod(methodName, typeof(TValue), new[] { typeof(T) }, true);
@@ -44,7 +45,7 @@ namespace osu.Framework.Graphics.Transforms
 
         private static WriteFunc createFieldSetter(FieldInfo field)
         {
-            if (!RuntimeInfo.SupportsIL) return (transformable, value) => field.SetValue(transformable, value);
+            if (!RuntimeInfo.SupportsJIT) return (transformable, value) => field.SetValue(transformable, value);
 
             string methodName = $"{typeof(T).ReadableName()}.{field.Name}.set_{Guid.NewGuid():N}";
             DynamicMethod setterMethod = new DynamicMethod(methodName, null, new[] { typeof(T), typeof(TValue) }, true);
@@ -58,19 +59,22 @@ namespace osu.Framework.Graphics.Transforms
 
         private static ReadFunc createPropertyGetter(MethodInfo getter)
         {
-            if (!RuntimeInfo.SupportsIL) return transformable => (TValue)getter.Invoke(transformable, new object[0]);
+            if (!RuntimeInfo.SupportsJIT) return transformable => (TValue)getter.Invoke(transformable, new object[0]);
+
             return (ReadFunc)getter.CreateDelegate(typeof(ReadFunc));
         }
 
         private static WriteFunc createPropertySetter(MethodInfo setter)
         {
-            if (!RuntimeInfo.SupportsIL) return (transformable, value) => setter.Invoke(transformable, new object[]{ value });
+            if (!RuntimeInfo.SupportsJIT) return (transformable, value) => setter.Invoke(transformable, new object[] { value });
+
             return (WriteFunc)setter.CreateDelegate(typeof(WriteFunc));
         }
 
         private static Accessor findAccessor(Type type, string propertyOrFieldName)
         {
             PropertyInfo property = type.GetProperty(propertyOrFieldName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
             if (property != null)
             {
                 if (property.PropertyType != typeof(TValue))
@@ -98,6 +102,7 @@ namespace osu.Framework.Graphics.Transforms
             }
 
             FieldInfo field = type.GetField(propertyOrFieldName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+
             if (field != null)
             {
                 if (field.FieldType != typeof(TValue))

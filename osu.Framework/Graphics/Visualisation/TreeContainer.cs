@@ -1,5 +1,5 @@
-﻿// Copyright (c) 2007-2018 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
 
 using System;
 using osu.Framework.Allocation;
@@ -44,6 +44,7 @@ namespace osu.Framework.Graphics.Visualisation
             {
                 if (state == value)
                     return;
+
                 state = value;
 
                 switch (state)
@@ -51,6 +52,7 @@ namespace osu.Framework.Graphics.Visualisation
                     case TreeContainerStatus.Offscreen:
                         this.Delay(500).FadeTo(0.7f, 300);
                         break;
+
                     case TreeContainerStatus.Onscreen:
                         this.FadeIn(300, Easing.OutQuint);
                         break;
@@ -163,7 +165,7 @@ namespace osu.Framework.Graphics.Visualisation
                 }
             });
 
-            PropertyDisplay.StateChanged += v => propertyButton.BackgroundColour = v == Visibility.Visible ? buttonBackgroundHighlighted : buttonBackground;
+            PropertyDisplay.State.ValueChanged += v => propertyButton.BackgroundColour = v.NewValue == Visibility.Visible ? buttonBackgroundHighlighted : buttonBackground;
         }
 
         protected override void Update()

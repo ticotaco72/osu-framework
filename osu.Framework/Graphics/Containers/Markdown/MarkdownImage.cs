@@ -1,5 +1,5 @@
-﻿// Copyright (c) 2007-2018 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
 
 using osu.Framework.Allocation;
 using osu.Framework.Graphics.Sprites;
@@ -30,10 +30,12 @@ namespace osu.Framework.Graphics.Containers.Markdown
             InternalChild = new DelayedLoadWrapper(CreateImageContainer(url));
         }
 
-        protected virtual ImageContainer CreateImageContainer(string url) => new ImageContainer(url)
+        protected virtual ImageContainer CreateImageContainer(string url)
         {
-            OnLoadComplete = d => d.FadeInFromZero(300, Easing.OutQuint)
-        };
+            var converter = new ImageContainer(url);
+            converter.OnLoadComplete += d => d.FadeInFromZero(300, Easing.OutQuint);
+            return converter;
+        }
 
         protected class ImageContainer : CompositeDrawable
         {

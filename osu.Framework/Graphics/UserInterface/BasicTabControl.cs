@@ -1,5 +1,5 @@
-﻿// Copyright (c) 2007-2018 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
 
 using osu.Framework.Graphics.Sprites;
 using osuTK.Graphics;
@@ -18,9 +18,8 @@ namespace osu.Framework.Graphics.UserInterface
         {
             private readonly SpriteText text;
 
-            public override bool IsRemovable => true;
-
-            public BasicTabItem(T value) : base(value)
+            public BasicTabItem(T value)
+                : base(value)
             {
                 AutoSizeAxes = Axes.Both;
 
@@ -28,7 +27,7 @@ namespace osu.Framework.Graphics.UserInterface
                 {
                     Margin = new MarginPadding(2),
                     Text = value.ToString(),
-                    TextSize = 18
+                    Font = new FontUsage(size: 18),
                 });
             }
 

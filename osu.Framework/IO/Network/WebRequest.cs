@@ -1,5 +1,5 @@
-﻿// Copyright (c) 2007-2018 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
 
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using osu.Framework.Configuration;
+using osu.Framework.Bindables;
 using osu.Framework.Extensions.ExceptionExtensions;
 using osu.Framework.Logging;
 
@@ -230,6 +230,7 @@ namespace osu.Framework.IO.Network
         private async Task internalPerform()
         {
             var url = Url;
+
             if (!AllowInsecureRequests && !url.StartsWith(@"https://"))
             {
                 logger.Add($"Insecure request was automatically converted to https ({Url})");
@@ -299,10 +300,10 @@ namespace osu.Framework.IO.Network
                         }
 
                         requestStream = new LengthTrackingStream(postContent);
-                        requestStream.BytesRead.ValueChanged += v =>
+                        requestStream.BytesRead.ValueChanged += e =>
                         {
                             reportForwardProgress();
-                            UploadProgress?.Invoke(v, contentLength);
+                            UploadProgress?.Invoke(e.NewValue, contentLength);
                         };
 
                         request.Content = new StreamContent(requestStream);
@@ -454,6 +455,29 @@ namespace osu.Framework.IO.Network
                 }
 
                 logger.Add($"Request to {Url} failed with {e}.");
+
+                if (ResponseStream?.Length > 0)
+                {
+                    // in the case we fail a request, spitting out the response in the log is quite helpful.
+                    ResponseStream.Seek(0, SeekOrigin.Begin);
+
+                    using (StreamReader r = new StreamReader(ResponseStream, new UTF8Encoding(false, true), true, 1024, true))
+                    {
+                        try
+                        {
+                            char[] output = new char[1024];
+                            int read = r.ReadBlock(output, 0, 1024);
+                            string trimmedResponse = new string(output, 0, read);
+                            logger.Add($"Response was: {trimmedResponse}");
+                            if (read == 1024)
+                                logger.Add("(Response was trimmed)");
+                        }
+                        catch (DecoderFallbackException)
+                        {
+                            // Ignore non-text format
+                        }
+                    }
+                }
             }
             else
                 logger.Add($@"Request to {Url} successfully completed!");
@@ -607,6 +631,7 @@ namespace osu.Framework.IO.Network
         protected void Dispose(bool disposing)
         {
             if (isDisposed) return;
+
             isDisposed = true;
 
             Abort();
@@ -649,10 +674,7 @@ namespace osu.Framework.IO.Network
                 return read;
             }
 
-            public override long Seek(long offset, SeekOrigin origin)
-            {
-                return baseStream.Seek(offset, origin);
-            }
+            public override long Seek(long offset, SeekOrigin origin) => baseStream.Seek(offset, origin);
 
             public override void SetLength(long value)
             {

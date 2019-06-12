@@ -1,5 +1,5 @@
-﻿// Copyright (c) 2007-2018 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
 
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ namespace osu.Framework.Graphics.Containers.Markdown
     /// </code>
     public class MarkdownTable : CompositeDrawable
     {
-        private TableContainer tableContainer;
+        private GridContainer tableContainer;
 
         private readonly Table table;
 
@@ -55,7 +55,7 @@ namespace osu.Framework.Graphics.Containers.Markdown
                 rows.Add(row);
             }
 
-            InternalChild = tableContainer = new TableContainer
+            InternalChild = tableContainer = new GridContainer
             {
                 AutoSizeAxes = Axes.Y,
                 RelativeSizeAxes = Axes.X,
@@ -144,17 +144,6 @@ namespace osu.Framework.Graphics.Containers.Markdown
             tableContainer.RowDimensions = rowDefinitions;
         }
 
-        protected virtual MarkdownTableCell CreateTableCell(TableCell cell, TableColumnDefinition definition, bool isHeading)
-        {
-            return new MarkdownTableCell(cell, definition, isHeading);
-        }
-
-        private class TableContainer : GridContainer
-        {
-            public new Axes AutoSizeAxes
-            {
-                set => base.AutoSizeAxes = value;
-            }
-        }
+        protected virtual MarkdownTableCell CreateTableCell(TableCell cell, TableColumnDefinition definition, bool isHeading) => new MarkdownTableCell(cell, definition);
     }
 }

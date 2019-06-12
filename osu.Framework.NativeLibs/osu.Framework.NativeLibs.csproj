@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup Label="Project">
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
@@ -9,7 +9,7 @@
     <AssemblyName>osu.Framework.NativeLibs</AssemblyName>
     <Description>Native libraries for osu!framework</Description>
     <Product>osu!framework Libraries</Product>
-    <LangVersion>7.2</LangVersion>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Label="Nuget">
     <Title>osu!framework Libraries</Title>
@@ -19,12 +19,12 @@
     <PackageProjectUrl>https://github.com/ppy/osu-framework</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ppy/osu-framework</RepositoryUrl>
     <PackageReleaseNotes>Automated release.</PackageReleaseNotes>
-    <copyright>Copyright (c) 2007-2019 ppy Pty Ltd contact@ppy.sh</copyright>
+    <copyright>Copyright (c) 2019 ppy Pty Ltd</copyright>
     <PackageTags>osu game framework libraries</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <NativeLibs Include="$(MSBuildThisFileDirectory)*\*.dll*" />
-    <NativeLibs Include="$(MSBuildThisFileDirectory)*.so" />
+    <NativeLibs Include="$(MSBuildThisFileDirectory)*\*.so" />
     <NativeLibs Include="$(MSBuildThisFileDirectory)*.a" />
     <NativeLibs Include="$(MSBuildThisFileDirectory)*.dylib" />
     <None Include="@(NativeLibs)">

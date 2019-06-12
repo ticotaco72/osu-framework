@@ -1,5 +1,5 @@
-﻿// Copyright (c) 2007-2018 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
 
 using osu.Framework.Lists;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ using osu.Framework.Graphics.Colour;
 using osuTK;
 using System.Collections;
 using System.Diagnostics;
+using osu.Framework.Graphics.Effects;
 
 namespace osu.Framework.Graphics.Containers
 {
@@ -34,7 +35,7 @@ namespace osu.Framework.Graphics.Containers
         where T : Drawable
     {
         /// <summary>
-        /// Contructs a <see cref="Container"/> that stores children.
+        /// Constructs a <see cref="Container"/> that stores children.
         /// </summary>
         public Container()
         {
@@ -353,6 +354,15 @@ namespace osu.Framework.Graphics.Containers
         {
             get => base.Padding;
             set => base.Padding = value;
+        }
+
+        /// <summary>
+        /// Whether to use a local vertex batch for rendering. If false, a parenting vertex batch will be used.
+        /// </summary>
+        public new bool ForceLocalVertexBatch
+        {
+            get => base.ForceLocalVertexBatch;
+            set => base.ForceLocalVertexBatch = value;
         }
 
         /// <summary>

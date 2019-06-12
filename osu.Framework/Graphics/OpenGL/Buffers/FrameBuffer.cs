@@ -1,5 +1,5 @@
-﻿// Copyright (c) 2007-2018 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
 
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,10 @@ namespace osu.Framework.Graphics.OpenGL.Buffers
 
         #region Disposal
 
-        ~FrameBuffer() => Dispose(false);
+        ~FrameBuffer()
+        {
+            Dispose(false);
+        }
 
         public void Dispose()
         {
@@ -30,18 +33,16 @@ namespace osu.Framework.Graphics.OpenGL.Buffers
 
         private bool isDisposed;
 
-        protected virtual void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing) => GLWrapper.ScheduleDisposal(delegate
         {
             if (isDisposed)
                 return;
+
             isDisposed = true;
 
-            GLWrapper.ScheduleDisposal(delegate
-            {
-                GLWrapper.DeleteFramebuffer(frameBuffer);
-                frameBuffer = -1;
-            });
-        }
+            GLWrapper.DeleteFramebuffer(frameBuffer);
+            frameBuffer = -1;
+        });
 
         #endregion
 
@@ -80,6 +81,7 @@ namespace osu.Framework.Graphics.OpenGL.Buffers
             {
                 if (value == size)
                     return;
+
                 size = value;
 
                 Texture.Width = (int)Math.Ceiling(size.X);
@@ -108,6 +110,7 @@ namespace osu.Framework.Graphics.OpenGL.Buffers
         public void Bind()
         {
             GLWrapper.BindFrameBuffer(frameBuffer);
+
             foreach (var r in attachedRenderBuffers)
             {
                 r.Size = Size;

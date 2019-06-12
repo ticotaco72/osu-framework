@@ -1,5 +1,5 @@
-// Copyright (c) 2007-2018 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu-framework/master/LICENCE
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
 
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using ManagedBass;
 using osuTK;
 using osu.Framework.MathUtils;
-using System.Runtime.InteropServices;
+using osu.Framework.Audio.Callbacks;
 
 namespace osu.Framework.Audio.Track
 {
@@ -19,7 +19,7 @@ namespace osu.Framework.Audio.Track
     public class Waveform : IDisposable
     {
         /// <summary>
-        /// <see cref="WaveformPoint"/>s are initially generated to a 1ms resolution to cover most use cases.
+        /// <see cref="Point"/>s are initially generated to a 1ms resolution to cover most use cases.
         /// </summary>
         private const float resolution = 0.001f;
 
@@ -27,7 +27,6 @@ namespace osu.Framework.Audio.Track
         /// The data stream is iteratively decoded to provide this many points per iteration so as to not exceed BASS's internal buffer size.
         /// </summary>
         private const int points_per_iteration = 100000;
-        private const int bytes_per_sample = 4;
 
         /// <summary>
         /// FFT1024 gives ~40hz accuracy.
@@ -60,13 +59,12 @@ namespace osu.Framework.Audio.Track
         private const double high_max = 12000;
 
         private int channels;
-        private List<WaveformPoint> points = new List<WaveformPoint>();
+        private List<Point> points = new List<Point>();
 
         private readonly CancellationTokenSource cancelSource = new CancellationTokenSource();
         private readonly Task readTask;
 
-        private DataStreamFileProcedures procedures;
-        private GCHandle pinnedProcedures;
+        private FileCallbacks fileCallbacks;
 
         /// <summary>
         /// Constructs a new <see cref="Waveform"/> from provided audio data.
@@ -82,13 +80,9 @@ namespace osu.Framework.Audio.Track
                 if (Bass.CurrentDevice <= 0)
                     return;
 
-                procedures = CreateDataStreamFileProcedures(data);
+                fileCallbacks = new FileCallbacks(new DataStreamFileProcedures(data));
 
-                if (!RuntimeInfo.SupportsIL)
-                    pinnedProcedures = GCHandle.Alloc(procedures, GCHandleType.Pinned);
-
-                int decodeStream = Bass.CreateStream(StreamSystem.NoBuffer, BassFlags.Decode | BassFlags.Float, procedures.BassProcedures,
-                    RuntimeInfo.SupportsIL ? IntPtr.Zero : GCHandle.ToIntPtr(pinnedProcedures));
+                int decodeStream = Bass.CreateStream(StreamSystem.NoBuffer, BassFlags.Decode | BassFlags.Float, fileCallbacks.Callbacks, fileCallbacks.Handle);
 
                 Bass.ChannelGetInfo(decodeStream, out ChannelInfo info);
 
@@ -97,26 +91,27 @@ namespace osu.Framework.Audio.Track
                 // Each "point" is generated from a number of samples, each sample contains a number of channels
                 int samplesPerPoint = (int)(info.Frequency * resolution * info.Channels);
 
-                int bytesPerPoint = samplesPerPoint * bytes_per_sample;
+                int bytesPerPoint = samplesPerPoint * TrackBass.BYTES_PER_SAMPLE;
 
                 points.Capacity = (int)(length / bytesPerPoint);
 
                 // Each iteration pulls in several samples
                 int bytesPerIteration = bytesPerPoint * points_per_iteration;
-                var sampleBuffer = new float[bytesPerIteration / bytes_per_sample];
+                var sampleBuffer = new float[bytesPerIteration / TrackBass.BYTES_PER_SAMPLE];
 
                 // Read sample data
                 while (length > 0)
                 {
                     length = Bass.ChannelGetData(decodeStream, sampleBuffer, bytesPerIteration);
-                    int samplesRead = (int)(length / bytes_per_sample);
+                    int samplesRead = (int)(length / TrackBass.BYTES_PER_SAMPLE);
 
                     // Each point is composed of multiple samples
                     for (int i = 0; i < samplesRead; i += samplesPerPoint)
                     {
                         // Channels are interleaved in the sample data (data[0] -> channel0, data[1] -> channel1, data[2] -> channel0, etc)
                         // samplesPerPoint assumes this interleaving behaviour
-                        var point = new WaveformPoint(info.Channels);
+                        var point = new Point(info.Channels);
+
                         for (int j = i; j < i + samplesPerPoint; j += info.Channels)
                         {
                             // Find the maximum amplitude for each channel in the point
@@ -139,6 +134,7 @@ namespace osu.Framework.Audio.Track
                 float[] bins = new float[fft_bins];
                 int currentPoint = 0;
                 long currentByte = 0;
+
                 while (length > 0)
                 {
                     length = Bass.ChannelGetData(decodeStream, bins, (int)fft_samples);
@@ -162,8 +158,6 @@ namespace osu.Framework.Audio.Track
                 channels = info.Channels;
             }, cancelSource.Token);
         }
-
-        protected virtual DataStreamFileProcedures CreateDataStreamFileProcedures(Stream dataStream) => new DataStreamFileProcedures(dataStream);
 
         private double computeIntensity(ChannelInfo info, float[] bins, double startFrequency, double endFrequency)
         {
@@ -189,14 +183,14 @@ namespace osu.Framework.Audio.Track
         {
             if (pointCount < 0) throw new ArgumentOutOfRangeException(nameof(pointCount));
 
-            if (readTask == null)
+            if (pointCount == 0 || readTask == null)
                 return new Waveform(null);
 
             await readTask;
 
             return await Task.Run(() =>
             {
-                var generatedPoints = new List<WaveformPoint>();
+                var generatedPoints = new List<Point>();
                 float pointsPerGeneratedPoint = (float)points.Count / pointCount;
 
                 // Determines at which width (relative to the resolution) our smoothing filter is truncated.
@@ -208,7 +202,9 @@ namespace osu.Framework.Audio.Track
                 int kernelWidth = (int)(pointsPerGeneratedPoint * kernel_width_factor) + 1;
 
                 float[] filter = new float[kernelWidth + 1];
-                for (int i = 0; i < filter.Length; ++i) {
+
+                for (int i = 0; i < filter.Length; ++i)
+                {
                     filter[i] = (float)Blur.EvalGaussian(i, pointsPerGeneratedPoint);
                 }
 
@@ -219,8 +215,9 @@ namespace osu.Framework.Audio.Track
                     int startIndex = (int)i - kernelWidth;
                     int endIndex = (int)i + kernelWidth;
 
-                    var point = new WaveformPoint(channels);
+                    var point = new Point(channels);
                     float totalWeight = 0;
+
                     for (int j = startIndex; j < endIndex; j++)
                     {
                         if (j < 0 || j >= points.Count) continue;
@@ -256,12 +253,12 @@ namespace osu.Framework.Audio.Track
         /// <summary>
         /// Gets all the points represented by this <see cref="Waveform"/>.
         /// </summary>
-        public List<WaveformPoint> GetPoints() => GetPointsAsync().Result;
+        public List<Point> GetPoints() => GetPointsAsync().Result;
 
         /// <summary>
         /// Gets all the points represented by this <see cref="Waveform"/>.
         /// </summary>
-        public async Task<List<WaveformPoint>> GetPointsAsync()
+        public async Task<List<Point>> GetPointsAsync()
         {
             if (readTask == null)
                 return points;
@@ -271,12 +268,12 @@ namespace osu.Framework.Audio.Track
         }
 
         /// <summary>
-        /// Gets the number of channels represented by each <see cref="WaveformPoint"/>.
+        /// Gets the number of channels represented by each <see cref="Point"/>.
         /// </summary>
         public int GetChannels() => GetChannelsAsync().Result;
 
         /// <summary>
-        /// Gets the number of channels represented by each <see cref="WaveformPoint"/>.
+        /// Gets the number of channels represented by each <see cref="Point"/>.
         /// </summary>
         public async Task<int> GetChannelsAsync()
         {
@@ -306,53 +303,52 @@ namespace osu.Framework.Audio.Track
         {
             if (isDisposed)
                 return;
+
             isDisposed = true;
 
             cancelSource?.Cancel();
             cancelSource?.Dispose();
             points = null;
 
-            if (pinnedProcedures.IsAllocated)
-                pinnedProcedures.Free();
-
-            procedures = null;
+            fileCallbacks?.Dispose();
+            fileCallbacks = null;
         }
 
         #endregion
-    }
-
-    /// <summary>
-    /// Represents a singular point of data in a <see cref="Waveform"/>.
-    /// </summary>
-    public class WaveformPoint
-    {
-        /// <summary>
-        /// An array of amplitudes, one for each channel.
-        /// </summary>
-        public readonly float[] Amplitude;
 
         /// <summary>
-        /// Unnormalised total intensity of the low-range (bass) frequencies.
+        /// Represents a singular point of data in a <see cref="Waveform"/>.
         /// </summary>
-        public double LowIntensity;
-
-        /// <summary>
-        /// Unnormalised total intensity of the mid-range frequencies.
-        /// </summary>
-        public double MidIntensity;
-
-        /// <summary>
-        /// Unnormalised total intensity of the high-range (treble) frequencies.
-        /// </summary>
-        public double HighIntensity;
-
-        /// <summary>
-        /// Cconstructs a <see cref="WaveformPoint"/>.
-        /// </summary>
-        /// <param name="channels">The number of channels that contain data.</param>
-        public WaveformPoint(int channels)
+        public class Point
         {
-            Amplitude = new float[channels];
+            /// <summary>
+            /// An array of amplitudes, one for each channel.
+            /// </summary>
+            public readonly float[] Amplitude;
+
+            /// <summary>
+            /// Unnormalised total intensity of the low-range (bass) frequencies.
+            /// </summary>
+            public double LowIntensity;
+
+            /// <summary>
+            /// Unnormalised total intensity of the mid-range frequencies.
+            /// </summary>
+            public double MidIntensity;
+
+            /// <summary>
+            /// Unnormalised total intensity of the high-range (treble) frequencies.
+            /// </summary>
+            public double HighIntensity;
+
+            /// <summary>
+            /// Cconstructs a <see cref="Point"/>.
+            /// </summary>
+            /// <param name="channels">The number of channels that contain data.</param>
+            public Point(int channels)
+            {
+                Amplitude = new float[channels];
+            }
         }
     }
 }
